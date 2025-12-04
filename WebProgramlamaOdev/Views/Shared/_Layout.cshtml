@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Fitness Center</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebProgramlamaOdev.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-heart-pulse-fill"></i> Fitness Center
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <!-- Ana Sayfa -->
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
+                        </li>
+
+                        <!-- Üye Paneli - Sadece giriş yapanlara -->
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="User" asp-controller="Appointment" asp-action="Create">Randevu Al</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="User" asp-controller="Appointment" asp-action="Index">Randevularım</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="User" asp-controller="AI" asp-action="Index">AI Önerileri</a>
+                                </li>
+                        }
+
+                        <!-- Admin Paneli - Sadece Admin rolüne -->
+                        @if (User.IsInRole("Admin"))
+                        {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-gear-fill"></i> Admin Paneli
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Gym" asp-action="Index">🏢 Salonlar</a></li>
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Service" asp-action="Index">💪 Hizmetler</a></li>
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Trainer" asp-action="Index">👨‍🏫 Eğitmenler</a></li>
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="TrainerAvailability" asp-action="Index">📅 Müsaitlik Saatleri</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Appointment" asp-action="Index">📋 Tüm Randevular</a></li>
+                                    </ul>
+                                </li>
+                        }
+                    </ul>
+
+                    <!-- Login / Logout -->
+                    <ul class="navbar-nav">
+                        <partial name="_LoginPartial" />
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mt-4">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted mt-5 py-3 bg-light">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 - Fitness Center Management System | Spor Salonu Yönetim Sistemi</p>
+            <small class="text-muted">Web Programlama Proje Ödevi</small>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
