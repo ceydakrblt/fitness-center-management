@@ -8,7 +8,7 @@ namespace WebProgramlamaOdev.Models
     {
         [Key]
         public int AIRequestId { get; set; }
-
+        //vv
         [Required]
         public string UserId { get; set; } = string.Empty;
 

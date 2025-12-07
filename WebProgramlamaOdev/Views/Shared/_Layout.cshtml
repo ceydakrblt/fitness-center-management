@@ -4,11 +4,34 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Fitness Center</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebProgramlamaOdev.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        /* NAVBAR overlay sorunlarını çözer */
+        .navbar {
+            z-index: 2000 !important;
+            position: relative !important;
+        }
+
+        /* Collapse açıkken aşağıya taşan görünmez overlay'i engeller */
+        .navbar-collapse {
+            z-index: 2001 !important;
+            position: relative !important;
+        }
+
+        /* Butonların her zaman tıklanabilir olmasını sağlar */
+        .clickable-btn {
+            position: relative;
+            z-index: 3000;
+        }
+    </style>
 </head>
 <body>
+
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
@@ -18,14 +41,16 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
+
                         <!-- Ana Sayfa -->
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
                         </li>
 
-                        <!-- Üye Paneli - Sadece giriş yapanlara -->
+                        <!-- Üye Menüleri -->
                         @if (User.Identity.IsAuthenticated)
                         {
                                 <li class="nav-item">
@@ -39,11 +64,11 @@
                                 </li>
                         }
 
-                        <!-- Admin Paneli - Sadece Admin rolüne -->
+                        <!-- Admin Menüleri -->
                         @if (User.IsInRole("Admin"))
                         {
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
                                         <i class="bi bi-gear-fill"></i> Admin Paneli
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="adminDropdown">
@@ -56,18 +81,20 @@
                                     </ul>
                                 </li>
                         }
+
                     </ul>
 
-                    <!-- Login / Logout -->
+                    <!-- Login -->
                     <ul class="navbar-nav">
                         <partial name="_LoginPartial" />
                     </ul>
+
                 </div>
             </div>
         </nav>
     </header>
 
-    <div class="container mt-4">
+    <div class="container mt-4" style="position: relative; z-index: 100;">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -84,5 +111,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

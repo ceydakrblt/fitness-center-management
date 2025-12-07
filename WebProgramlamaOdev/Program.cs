@@ -81,8 +81,8 @@ using (var scope = app.Services.CreateScope())
     }
 
     // 2) Admin kullanýcý oluþtur
-    string adminEmail = "ogrencinumarasi@sakarya.edu.tr";
-    string adminPassword = "sau";
+    string adminEmail = "adminsau@gmail.com";
+    string adminPassword = "sau123";
 
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
     if (adminUser == null)

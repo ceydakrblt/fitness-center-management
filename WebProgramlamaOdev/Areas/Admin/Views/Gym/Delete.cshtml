@@ -1,0 +1,54 @@
+﻿@model WebProgramlamaOdev.Models.Gym
+
+@{
+    ViewData["Title"] = "Salon Sil";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">⚠️ Salon Silme Onayı</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <strong>Dikkat!</strong> Bu salonu silmek istediğinize emin misiniz? Bu işlem geri alınamaz!
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Salon Adı</dt>
+                        <dd class="col-sm-8">
+                            <strong>@Model.Name</strong>
+                        </dd>
+
+                        <dt class="col-sm-4">Adres</dt>
+                        <dd class="col-sm-8">@Model.Address</dd>
+
+                        <dt class="col-sm-4">Telefon</dt>
+                        <dd class="col-sm-8">@Model.PhoneNumber</dd>
+
+                        <dt class="col-sm-4">Çalışma Saatleri</dt>
+                        <dd class="col-sm-8">
+                            @Model.OpeningTime.ToString(@"hh\:mm") - @Model.ClosingTime.ToString(@"hh\:mm")
+                        </dd>
+                    </dl>
+
+                    <hr />
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="GymId" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> İptal
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Evet, Sil
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
