@@ -1,89 +1,69 @@
 ﻿@model IEnumerable<WebProgramlamaOdev.Models.Appointment>
+@using WebProgramlamaOdev.Models
+@using System.Linq
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Randevu Yönetimi";
+    // Eğer filtre yoksa veya null ise, varsayılan olarak Beklemede (Pending) göster
+    var filterStatus = (AppointmentStatus?)ViewBag.FilterStatus ?? AppointmentStatus.Pending; 
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold">📆 Randevular</h1>
+    <div>
+        @foreach (AppointmentStatus status in Enum.GetValues(typeof(AppointmentStatus)))
+        {
+                <a asp-action="Index" asp-route-filterStatus="@status" 
+                   class="btn @(filterStatus == status ? "btn-primary" : "btn-outline-secondary") btn-sm">
+                @Html.DisplayNameFor(m => status) 
+                </a>
+        }
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AppointmentDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Trainer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Service)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AppointmentDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Trainer.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Service.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AppointmentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AppointmentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AppointmentId">Delete</a>
-            </td>
-        </tr>
+@if (TempData["SuccessMessage"] != null)
+{
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
 }
-    </tbody>
-</table>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.AppointmentDate)</th>
+                <th>Saat Aralığı</th>
+                <th>@Html.DisplayNameFor(model => model.User)</th>
+                <th>@Html.DisplayNameFor(model => model.Trainer)</th>
+                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>@Html.DisplayNameFor(model => model.TotalPrice)</th>
+                <th width="120px">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.AppointmentDate.ToString("dd MMMM yyyy")</td>
+                    <td>@item.StartTime.ToString(@"hh\:mm") - @item.EndTime.ToString(@"hh\:mm")</td>
+                    <td>@(item.User?.UserName ?? "N/A")</td> 
+                    <td>@(item.Trainer?.FullName ?? "N/A")</td>
+                    <td>
+                        <span class="badge 
+                        @(item.Status == AppointmentStatus.Approved ? "bg-success" : 
+                          item.Status == AppointmentStatus.Pending ? "bg-warning text-dark" : 
+                          "bg-danger")">
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </span>
+                    </td>
+                    <td>@item.TotalPrice.ToString("C2")</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a asp-action="Details" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-info text-white">Detay</a>
+                            <a asp-action="Edit" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-warning">Düzenle</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

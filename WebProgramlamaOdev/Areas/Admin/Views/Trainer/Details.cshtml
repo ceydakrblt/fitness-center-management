@@ -1,60 +1,47 @@
 ﻿@model WebProgramlamaOdev.Models.Trainer
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Eğitmen Detayları";
 }
 
-<h1>Details</h1>
+<h1>Eğitmen Detayları</h1>
 
 <div>
-    <h4>Trainer</h4>
+    <h4>@Model.FullName</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FullName)
+        <dt class = "col-sm-3">@Html.DisplayNameFor(model => model.FullName)</dt>
+        <dd class = "col-sm-9">@Html.DisplayFor(model => model.FullName)</dd>
+
+        <dt class = "col-sm-3">@Html.DisplayNameFor(model => model.Email)</dt>
+        <dd class = "col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+
+        <dt class = "col-sm-3">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+        <dd class = "col-sm-9">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+
+        <dt class = "col-sm-3">@Html.DisplayNameFor(model => model.Specialization)</dt>
+        <dd class = "col-sm-9">@Html.DisplayFor(model => model.Specialization)</dd>
+
+        <dt class = "col-sm-3">@Html.DisplayNameFor(model => model.Biography)</dt>
+        <dd class = "col-sm-9">@Html.DisplayFor(model => model.Biography)</dd>
+
+        <dt class = "col-sm-3">@Html.DisplayNameFor(model => model.PhotoUrl)</dt>
+        <dd class = "col-sm-9">
+            @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+            {
+                    <img src="@Model.PhotoUrl" alt="Eğitmen Fotoğrafı" style="max-width: 150px; height: auto;" />
+            }
+            else
+            {
+                    <span>Fotoğraf Yok</span>
+            }
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Specialization)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Specialization)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Biography)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Biography)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhotoUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhotoUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gym)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gym.Name)
-        </dd>
+
+        <dt class = "col-sm-3">@Html.DisplayNameFor(model => model.Gym)</dt>
+        <dd class = "col-sm-9">@(Model.Gym?.Name)</dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.TrainerId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.TrainerId" class="btn btn-warning">Düzenle</a> |
+    <a asp-action="Index" class="btn btn-secondary">Listeye Geri Dön</a>
 </div>

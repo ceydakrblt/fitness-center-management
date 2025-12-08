@@ -1,59 +1,56 @@
 ﻿@model IEnumerable<WebProgramlamaOdev.Models.TrainerAvailability>
+@using WebProgramlamaOdev.Models
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Eğitmen Müsaitlikleri";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold">📅 Eğitmen Müsaitlik Saatleri</h1>
+    <a asp-action="Create" class="btn btn-primary btn-lg">
+        + Yeni Müsaitlik Ekle
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DayOfWeek)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Trainer)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DayOfWeek)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Trainer.Email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AvailabilityId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AvailabilityId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AvailabilityId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Eğitmen</th>
+                <th>Gün</th>
+                <th>Başlangıç</th>
+                <th>Bitiş</th>
+                <th>Aktif</th>
+                <th width="150px">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(item.Trainer?.FullName)</td> 
+                    <td>@item.DayOfWeek.ToString()</td>
+                    <td>@item.StartTime.ToString(@"hh\:mm")</td>
+                    <td>@item.EndTime.ToString(@"hh\:mm")</td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                                <span class="badge bg-success">Evet</span>
+                        }
+                        else
+                        {
+                                <span class="badge bg-danger">Hayır</span>
+                        }
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a asp-action="Details" asp-route-id="@item.AvailabilityId" class="btn btn-sm btn-info text-white">Detay</a>
+                            <a asp-action="Edit" asp-route-id="@item.AvailabilityId" class="btn btn-sm btn-warning">Düzenle</a>
+                            <a asp-action="Delete" asp-route-id="@item.AvailabilityId" class="btn btn-sm btn-danger">Sil</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

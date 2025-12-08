@@ -1,112 +1,122 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebProgramlamaOdev.Areas.Identity.Data;
 using WebProgramlamaOdev.Models;
 
-namespace WebProgramlamaOdev.Areas.Admin.Controllers
+[Area("Admin")]
+[Authorize(Roles = "Admin")]
+public class TrainerAvailabilityController : Controller
 {
-    [Area("Admin")]
-    [Authorize(Roles = "Admin")]
-    public class TrainerAvailabilityController : Controller
+    private readonly ApplicationDbContext _context;
+
+    public TrainerAvailabilityController(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+    }
 
-        public TrainerAvailabilityController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+    // GET: Admin/TrainerAvailability (LIST)
+    public async Task<IActionResult> Index()
+    {
+        // Eğitmen adlarını göstermek için Trainer ilişkisini yüklüyoruz
+        var availabilities = await _context.TrainerAvailabilities
+            .Include(ta => ta.Trainer)
+            .ToListAsync();
 
-        // GET: Admin/TrainerAvailability
-        public async Task<IActionResult> Index()
-        {
-            var availabilities = _context.TrainerAvailabilities.Include(t => t.Trainer);
-            return View(await availabilities.ToListAsync());
-        }
+        return View(availabilities);
+    }
 
-        // GET: Admin/TrainerAvailability/Details/5
-        public async Task<IActionResult> Details(int? id)
+    // GET: Admin/TrainerAvailability/Details/5
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var availability = await _context.TrainerAvailabilities
+            .Include(ta => ta.Trainer)
+            .FirstOrDefaultAsync(m => m.AvailabilityId == id);
+
+        if (availability == null) return NotFound();
+
+        return View(availability);
+    }
+
+    // GET: Admin/TrainerAvailability/Create
+    public IActionResult Create()
+    {
+        ViewBag.TrainerId = new SelectList(_context.Trainers, "TrainerId", "FirstName");
+        return View();
+    }
+
+    // POST: Admin/TrainerAvailability/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(
+        [Bind("AvailabilityId,TrainerId,DayOfWeek,StartTime,EndTime,IsActive")] TrainerAvailability availability)
+    {
+        if (ModelState.IsValid)
         {
-            if (id == null)
+            if (availability.StartTime >= availability.EndTime)
             {
-                return NotFound();
+                ModelState.AddModelError("EndTime", "Bitiş Saati, Başlangıç Saatinden sonra olmalıdır.");
             }
-
-            var trainerAvailability = await _context.TrainerAvailabilities
-                .Include(t => t.Trainer)
-                .FirstOrDefaultAsync(m => m.AvailabilityId == id);
-            if (trainerAvailability == null)
+            else if (IsConflict(availability))
             {
-                return NotFound();
+                ModelState.AddModelError("", "Bu eğitmenin, aynı gün içinde bu saat aralığıyla çakışan bir müsaitlik kaydı zaten mevcut.");
             }
-
-            return View(trainerAvailability);
-        }
-
-        // GET: Admin/TrainerAvailability/Create
-        public IActionResult Create()
-        {
-            ViewData["TrainerId"] = new SelectList(_context.Trainers, "TrainerId", "FullName");
-            return View();
-        }
-
-        // POST: Admin/TrainerAvailability/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AvailabilityId,TrainerId,DayOfWeek,StartTime,EndTime,IsActive")] TrainerAvailability trainerAvailability)
-        {
-            if (ModelState.IsValid)
+            else
             {
-                _context.Add(trainerAvailability);
+                _context.Add(availability);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TrainerId"] = new SelectList(_context.Trainers, "TrainerId", "FullName", trainerAvailability.TrainerId);
-            return View(trainerAvailability);
         }
 
-        // GET: Admin/TrainerAvailability/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        ViewBag.TrainerId = new SelectList(_context.Trainers, "TrainerId", "FirstName", availability.TrainerId);
+        return View(availability);
+    }
+
+    // GET: Admin/TrainerAvailability/Edit/5
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var availability = await _context.TrainerAvailabilities.FindAsync(id);
+        if (availability == null) return NotFound();
+
+        ViewBag.TrainerId = new SelectList(_context.Trainers, "TrainerId", "FirstName", availability.TrainerId);
+        return View(availability);
+    }
+
+    // POST: Admin/TrainerAvailability/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id,
+        [Bind("AvailabilityId,TrainerId,DayOfWeek,StartTime,EndTime,IsActive")] TrainerAvailability availability)
+    {
+        if (id != availability.AvailabilityId) return NotFound();
+
+        if (ModelState.IsValid)
         {
-            if (id == null)
+            if (availability.StartTime >= availability.EndTime)
             {
-                return NotFound();
+                ModelState.AddModelError("EndTime", "Bitiş Saati, Başlangıç Saatinden sonra olmalıdır.");
             }
-
-            var trainerAvailability = await _context.TrainerAvailabilities.FindAsync(id);
-            if (trainerAvailability == null)
+            else if (IsConflict(availability, id))
             {
-                return NotFound();
+                ModelState.AddModelError("", "Bu eğitmenin, aynı gün içinde bu saat aralığıyla çakışan bir müsaitlik kaydı zaten mevcut.");
             }
-            ViewData["TrainerId"] = new SelectList(_context.Trainers, "TrainerId", "FullName", trainerAvailability.TrainerId);
-            return View(trainerAvailability);
-        }
-
-        // POST: Admin/TrainerAvailability/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AvailabilityId,TrainerId,DayOfWeek,StartTime,EndTime,IsActive")] TrainerAvailability trainerAvailability)
-        {
-            if (id != trainerAvailability.AvailabilityId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
+            else
             {
                 try
                 {
-                    _context.Update(trainerAvailability);
+                    _context.Update(availability);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TrainerAvailabilityExists(trainerAvailability.AvailabilityId))
+                    if (!_context.TrainerAvailabilities.Any(e => e.AvailabilityId == id))
                     {
                         return NotFound();
                     }
@@ -115,49 +125,59 @@ namespace WebProgramlamaOdev.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["TrainerId"] = new SelectList(_context.Trainers, "TrainerId", "FullName", trainerAvailability.TrainerId);
-            return View(trainerAvailability);
         }
 
-        // GET: Admin/TrainerAvailability/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        ViewBag.TrainerId = new SelectList(_context.Trainers, "TrainerId", "FirstName", availability.TrainerId);
+        return View(availability);
+    }
+
+    // GET: Admin/TrainerAvailability/Delete/5
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var availability = await _context.TrainerAvailabilities
+            .Include(ta => ta.Trainer)
+            .FirstOrDefaultAsync(m => m.AvailabilityId == id);
+
+        if (availability == null) return NotFound();
+
+        return View(availability);
+    }
+
+    // POST: Admin/TrainerAvailability/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var availability = await _context.TrainerAvailabilities.FindAsync(id);
+
+        if (availability != null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var trainerAvailability = await _context.TrainerAvailabilities
-                .Include(t => t.Trainer)
-                .FirstOrDefaultAsync(m => m.AvailabilityId == id);
-            if (trainerAvailability == null)
-            {
-                return NotFound();
-            }
-
-            return View(trainerAvailability);
+            _context.TrainerAvailabilities.Remove(availability);
         }
 
-        // POST: Admin/TrainerAvailability/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    // Yardımcı Metot: Çakışma Kontrolü (Randevu Sistemi için kritik)
+    private bool IsConflict(TrainerAvailability newAvailability, int? currentId = null)
+    {
+        // Kendisi hariç tüm kayıtları sorgula
+        var query = _context.TrainerAvailabilities.AsQueryable();
+        if (currentId.HasValue)
         {
-            var trainerAvailability = await _context.TrainerAvailabilities.FindAsync(id);
-            if (trainerAvailability != null)
-            {
-                _context.TrainerAvailabilities.Remove(trainerAvailability);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            query = query.Where(ta => ta.AvailabilityId != currentId.Value);
         }
 
-        private bool TrainerAvailabilityExists(int id)
-        {
-            return _context.TrainerAvailabilities.Any(e => e.AvailabilityId == id);
-        }
+        return query
+            .Any(ta =>
+                ta.TrainerId == newAvailability.TrainerId &&
+                ta.DayOfWeek == newAvailability.DayOfWeek &&
+                ta.IsActive == true &&
+                // Çakışma Kontrolü Mantığı: Yeni aralık, mevcut aralığın ne zaman başladığı ve bittiği
+                !(ta.EndTime <= newAvailability.StartTime || ta.StartTime >= newAvailability.EndTime));
     }
 }

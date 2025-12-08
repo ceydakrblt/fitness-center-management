@@ -1,78 +1,55 @@
 ﻿@model WebProgramlamaOdev.Models.Appointment
+@using WebProgramlamaOdev.Models 
+@using static WebProgramlamaOdev.Models.AppointmentStatus
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Randevu Detayları";
 }
 
-<h1>Details</h1>
+<h1>Randevu Detayları</h1>
 
 <div>
-    <h4>Appointment</h4>
+    <h4>Randevu #@Model.AppointmentId</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AppointmentDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AppointmentDate)
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.User)</dt>
+        <dd class="col-sm-9">@(Model.User?.UserName ?? "Bilinmiyor")</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Trainer)</dt>
+        <dd class="col-sm-9">@(Model.Trainer?.FullName)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Service)</dt>
+        <dd class="col-sm-9">@(Model.Service?.Name)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AppointmentDate)</dt>
+        <dd class="col-sm-9">@Model.AppointmentDate.ToString("dd MMMM yyyy")</dd>
+
+        <dt class="col-sm-3">Saat Aralığı</dt>
+        <dd class="col-sm-9">
+            <span class="badge bg-primary">@Model.StartTime.ToString(@"hh\:mm") - @Model.EndTime.ToString(@"hh\:mm")</span>
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.TotalPrice)</dt>
+        <dd class="col-sm-9">@Model.TotalPrice.ToString("C2")</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Status)</dt>
+        <dd class="col-sm-9">
+             <span class="badge 
+                @(Model.Status == AppointmentStatus.Approved ? "bg-success" : 
+                  Model.Status == AppointmentStatus.Pending ? "bg-warning text-dark" : 
+                  "bg-danger")">
+                @Html.DisplayFor(model => model.Status)
+            </span>
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Notes)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Trainer)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Trainer.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Service)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Service.Name)
-        </dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Notes)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Notes)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CreatedAt)</dt>
+        <dd class="col-sm-9">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.AppointmentId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.AppointmentId" class="btn btn-warning">Düzenle</a> |
+    <a asp-action="Index" class="btn btn-secondary">Listeye Geri Dön</a>
 </div>
