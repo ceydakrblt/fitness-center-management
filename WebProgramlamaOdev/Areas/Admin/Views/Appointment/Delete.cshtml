@@ -1,6 +1,5 @@
 ﻿@model WebProgramlamaOdev.Models.Appointment
 @using WebProgramlamaOdev.Models 
-@using static WebProgramlamaOdev.Models.AppointmentStatus // Enum'a doğrudan erişim için (Güvenlik amaçlı eklendi)
 
 @{
     ViewData["Title"] = "Randevu İptali Onayı";
@@ -25,10 +24,22 @@
 
         <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Status)</dt>
         <dd class="col-sm-9">
-             <span class="badge 
-                @(Model.Status == AppointmentStatus.Approved ? "bg-success" : 
-                  Model.Status == AppointmentStatus.Pending ? "bg-warning text-dark" : 
-                  "bg-danger")">
+            @{
+                string badgeClass = "";
+                if (Model.Status == WebProgramlamaOdev.Models.AppointmentStatus.Approved)
+                {
+                    badgeClass = "bg-success";
+                }
+                else if (Model.Status == WebProgramlamaOdev.Models.AppointmentStatus.Pending)
+                {
+                    badgeClass = "bg-warning text-dark";
+                }
+                else
+                {
+                    badgeClass = "bg-danger";
+                }
+            }
+            <span class="badge @badgeClass">
                 @Html.DisplayFor(model => model.Status)
             </span>
         </dd>

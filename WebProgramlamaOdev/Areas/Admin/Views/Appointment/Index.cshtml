@@ -1,21 +1,20 @@
 ﻿@model IEnumerable<WebProgramlamaOdev.Models.Appointment>
-@using WebProgramlamaOdev.Models
+@using WebProgramlamaOdev.Models 
 @using System.Linq
 
 @{
     ViewData["Title"] = "Randevu Yönetimi";
-    // Eğer filtre yoksa veya null ise, varsayılan olarak Beklemede (Pending) göster
     var filterStatus = (AppointmentStatus?)ViewBag.FilterStatus ?? AppointmentStatus.Pending; 
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold">📆 Randevular</h1>
     <div>
-        @foreach (AppointmentStatus status in Enum.GetValues(typeof(AppointmentStatus)))
+        @foreach (WebProgramlamaOdev.Models.AppointmentStatus status in Enum.GetValues(typeof(WebProgramlamaOdev.Models.AppointmentStatus)))
         {
                 <a asp-action="Index" asp-route-filterStatus="@status" 
                    class="btn @(filterStatus == status ? "btn-primary" : "btn-outline-secondary") btn-sm">
-                @Html.DisplayNameFor(m => status) 
+                @status.ToString() 
                 </a>
         }
     </div>
@@ -48,11 +47,23 @@
                     <td>@(item.User?.UserName ?? "N/A")</td> 
                     <td>@(item.Trainer?.FullName ?? "N/A")</td>
                     <td>
-                        <span class="badge 
-                        @(item.Status == AppointmentStatus.Approved ? "bg-success" : 
-                          item.Status == AppointmentStatus.Pending ? "bg-warning text-dark" : 
-                          "bg-danger")">
-                            @Html.DisplayFor(modelItem => item.Status)
+                        @{
+                            string badgeClass = "";
+                            if (item.Status == WebProgramlamaOdev.Models.AppointmentStatus.Approved)
+                            {
+                                badgeClass = "bg-success";
+                            }
+                            else if (item.Status == WebProgramlamaOdev.Models.AppointmentStatus.Pending)
+                            {
+                                badgeClass = "bg-warning text-dark";
+                            }
+                            else
+                            {
+                                badgeClass = "bg-danger";
+                            }
+                        }
+                        <span class="badge @badgeClass">
+                            @item.Status.ToString()
                         </span>
                     </td>
                     <td>@item.TotalPrice.ToString("C2")</td>
