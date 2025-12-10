@@ -1,0 +1,35 @@
+﻿@model IEnumerable<WebProgramlamaOdev.Models.Service>
+
+@{
+    ViewData["Title"] = "Hizmet Seçimi";
+}
+
+<h1 class="fw-bold">1. Adım: Hizmet Seçimi</h1>
+<p class="text-muted">Lütfen almak istediğiniz hizmet türünü seçiniz.</p>
+
+@if (Model == null || !Model.Any())
+{
+        <div class="alert alert-warning">Aktif hizmet bulunmamaktadır. Lütfen Admin ile iletişime geçiniz.</div>
+}
+else
+{
+        <div class="row">
+        @foreach (var service in Model)
+        {
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow h-100">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">@service.Name</h5>
+                                <p class="card-text">
+                                    Süre: @service.DurationMinutes dk <br />
+                                    Ücret: @service.Price.ToString("C2")
+                                </p>
+                                <a asp-action="Create" asp-route-serviceId="@service.ServiceId" class="btn btn-primary">
+                                    Bu Hizmeti Seç
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+        }
+        </div>
+}

@@ -38,5 +38,9 @@ namespace WebProgramlamaOdev.Models
         public Gym? Gym { get; set; }
 
         public ICollection<Trainer> Trainers { get; set; } = new List<Trainer>();
+
+        [Display(Name = "Aktif")]
+        public bool IsActive { get; set; } = true; // Varsayılan olarak aktif
     }
+
 }

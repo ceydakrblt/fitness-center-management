@@ -1,0 +1,71 @@
+﻿@model IEnumerable<WebProgramlamaOdev.Models.Appointment>
+@using WebProgramlamaOdev.Models
+@using static WebProgramlamaOdev.Models.AppointmentStatus 
+
+@{
+    ViewData["Title"] = "Randevularım";
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml"; // User Layout'u kullandığınızı varsayıyorum
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold">📆 Randevularım</h1>
+    <a asp-action="SelectService" class="btn btn-primary btn-lg">
+        + Yeni Randevu Al
+    </a>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (Model == null || !Model.Any())
+{
+        <div class="alert alert-info">
+            Henüz bir randevunuz bulunmamaktadır. Hemen yeni bir randevu alabilirsiniz.
+        </div>
+}
+else
+{
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Tarih/Saat</th>
+                        <th>@Html.DisplayNameFor(model => model.Trainer)</th>
+                        <th>@Html.DisplayNameFor(model => model.Service)</th>
+                        <th>@Html.DisplayNameFor(model => model.Status)</th>
+                        <th width="120px">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>@item.AppointmentDate.ToString("dd MMMM yyyy") (@item.StartTime.ToString(@"hh\:mm") - @item.EndTime.ToString(@"hh\:mm"))</td>
+                            <td>@(item.Trainer?.FullName ?? "N/A")</td>
+                            <td>@(item.Service?.Name ?? "N/A")</td>
+                            <td>
+                                <span class="badge 
+                            @(item.Status == AppointmentStatus.Approved ? "bg-success" : 
+                              item.Status == AppointmentStatus.Pending ? "bg-warning text-dark" : 
+                              item.Status == AppointmentStatus.Cancelled ? "bg-danger" :
+                              "bg-secondary")">
+                                @Html.DisplayFor(modelItem => item.Status)
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                @if (item.Status == AppointmentStatus.Pending || item.Status == AppointmentStatus.Approved)
+                                {
+                                            <a asp-action="Cancel" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-danger">İptal Et</a>
+                                }
+                                    <a asp-action="Details" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-info text-white">Detay</a>
+                                </div>
+                            </td>
+                        </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+}
