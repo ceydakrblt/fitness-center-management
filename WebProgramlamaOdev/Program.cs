@@ -8,15 +8,15 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection")
     ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
-// DbContext Ayarý
+// DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Identity Ayarý
+// Identity
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
-    // Þifre gereksinimlerini gevþet (sau gibi basit þifre için)
+
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
@@ -26,15 +26,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// MVC Ekle
+// MVC & Razor
 builder.Services.AddControllersWithViews();
-
-// Razor Pages ekle (Identity için gerekli!)
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Production Hata Yönetimi
+// Error Handling
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -43,34 +41,44 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Areas Route (Admin & User)
+// --------------------------------------------------------
+// ROUTING
+// --------------------------------------------------------
+
+// 1) Admin Area Route (specific route comes first)
+app.MapAreaControllerRoute(
+    name: "AdminArea",
+    areaName: "Admin",
+    pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
+
+// 2) General Area Routing (User area included)
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-// Default Route
+// 3) Default Route
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// Razor Pages mapping (Identity sayfalarý için ZORUNLU!)
 app.MapRazorPages();
 
-// ----------------------
-// ADMIN OLUÞTURMA - TEK SEFER
-// ----------------------
+// --------------------------------------------------------
+// ADMIN CREATION (one time setup)
+// --------------------------------------------------------
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 
-    // 1) Rolleri oluþtur
+    // Roles
     string[] roles = { "Admin", "Uye" };
     foreach (var role in roles)
     {
@@ -80,7 +88,7 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    // 2) Admin kullanýcý oluþtur
+    // Admin user
     string adminEmail = "adminsau@gmail.com";
     string adminPassword = "sau123";
 
@@ -93,8 +101,8 @@ using (var scope = app.Services.CreateScope())
             Email = adminEmail,
             EmailConfirmed = true
         };
-        var result = await userManager.CreateAsync(adminUser, adminPassword);
 
+        var result = await userManager.CreateAsync(adminUser, adminPassword);
         if (result.Succeeded)
         {
             await userManager.AddToRoleAsync(adminUser, "Admin");
@@ -102,7 +110,6 @@ using (var scope = app.Services.CreateScope())
     }
     else
     {
-        // Kullanýcý varsa rolde olup olmadýðýný kontrol et
         if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
         {
             await userManager.AddToRoleAsync(adminUser, "Admin");

@@ -13,6 +13,7 @@ using System;
 namespace WebProgramlamaOdev.Areas.User.Controllers
 {
     [Area("User")]
+    [Route("User/[controller]/[action]")]
     [Authorize] // Sadece giriş yapmış üyeler erişebilir
     public class AppointmentController : Controller
     {
