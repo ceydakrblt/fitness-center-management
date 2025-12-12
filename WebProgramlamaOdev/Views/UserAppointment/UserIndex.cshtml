@@ -4,12 +4,12 @@
 
 @{
     ViewData["Title"] = "Randevularım";
-    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml"; // User Layout'u kullandığınızı varsayıyorum
+    
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold">📆 Randevularım</h1>
-   <a asp-area="User" asp-controller="Appointment" asp-action="SelectService">Randevu Al</a>
+   <a asp-controller="UserAppointment" asp-action="Create">Randevu Al</a>
 
         + Yeni Randevu Al
     </a>

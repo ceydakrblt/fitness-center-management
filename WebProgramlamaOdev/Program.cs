@@ -4,15 +4,18 @@ using WebProgramlamaOdev.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Connection String
+// ---------------------------------
+// CONNECTION STRING
+// ---------------------------------
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection")
-    ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
+    ?? throw new InvalidOperationException("Connection string not found.");
 
-// DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Identity
+// ---------------------------------
+// IDENTITY
+// ---------------------------------
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -26,13 +29,17 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// MVC & Razor
+// ---------------------------------
+// MVC & RAZOR
+// ---------------------------------
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Error Handling
+// ---------------------------------
+// ERROR HANDLING
+// ---------------------------------
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -42,36 +49,26 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+// ---------------------------------
+// PIPELINE
+// ---------------------------------
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// --------------------------------------------------------
+// ---------------------------------
 // ROUTING
-// --------------------------------------------------------
-
-// 1) Admin Area Route (specific route comes first)
-app.MapAreaControllerRoute(
-    name: "AdminArea",
-    areaName: "Admin",
-    pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
-
-// 2) General Area Routing (User area included)
-app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-// 3) Default Route
+// ---------------------------------
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
 
-// --------------------------------------------------------
-// ADMIN CREATION (one time setup)
-// --------------------------------------------------------
+// ---------------------------------
+// ROLE AND USER SEED
+// ---------------------------------
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -80,6 +77,7 @@ using (var scope = app.Services.CreateScope())
 
     // Roles
     string[] roles = { "Admin", "Uye" };
+
     foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
@@ -93,6 +91,7 @@ using (var scope = app.Services.CreateScope())
     string adminPassword = "sau123";
 
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
     if (adminUser == null)
     {
         adminUser = new IdentityUser
@@ -114,6 +113,15 @@ using (var scope = app.Services.CreateScope())
         {
             await userManager.AddToRoleAsync(adminUser, "Admin");
         }
+    }
+
+    // Normal user (Uye role)
+    string uyeEmail = "ceydakarabulutt@gmail.com"; // CHANGE THIS
+
+    var uyeUser = await userManager.FindByEmailAsync(uyeEmail);
+    if (uyeUser != null && !await userManager.IsInRoleAsync(uyeUser, "Uye"))
+    {
+        await userManager.AddToRoleAsync(uyeUser, "Uye");
     }
 }
 

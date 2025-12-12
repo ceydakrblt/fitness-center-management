@@ -7,9 +7,8 @@ using WebProgramlamaOdev.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebProgramlamaOdev.Areas.Admin.Controllers
+namespace WebProgramlamaOdev.Controllers
 {
-    [Area("Admin")]
     [Authorize(Roles = "Admin")]
     public class TrainerController : Controller
     {

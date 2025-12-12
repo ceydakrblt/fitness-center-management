@@ -1,0 +1,82 @@
+﻿@model IEnumerable<WebProgramlamaOdev.Models.Appointment>
+@using WebProgramlamaOdev.Models
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Randevu Yönetimi";
+    var filterStatus = (AppointmentStatus?)ViewBag.FilterStatus ?? AppointmentStatus.Pending;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold">📆 Randevular</h1>
+    <div>
+        @foreach (AppointmentStatus status in Enum.GetValues(typeof(AppointmentStatus)))
+        {
+                <a asp-action="AdminIndex"
+                   asp-route-filterStatus="@status"
+                   class="btn @(filterStatus == status ? "btn-primary" : "btn-outline-secondary") btn-sm">
+                @status.ToString()
+                </a>
+        }
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.AppointmentDate)</th>
+                <th>Saat Aralığı</th>
+                <th>@Html.DisplayNameFor(model => model.User)</th>
+                <th>@Html.DisplayNameFor(model => model.Trainer)</th>
+                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>@Html.DisplayNameFor(model => model.TotalPrice)</th>
+                <th width="120px">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                    <tr>
+                        <td>@item.AppointmentDate.ToString("dd MMMM yyyy")</td>
+                        <td>@item.StartTime.ToString(@"hh\:mm") - @item.EndTime.ToString(@"hh\:mm")</td>
+                        <td>@(item.User?.UserName ?? "N/A")</td>
+                        <td>@(item.Trainer?.FullName ?? "N/A")</td>
+                        <td>
+                        @{
+                            string badgeClass = item.Status switch
+                            {
+                                AppointmentStatus.Approved => "bg-success",
+                                AppointmentStatus.Pending => "bg-warning text-dark",
+                                _ => "bg-danger"
+                            };
+                        }
+                            <span class="badge @badgeClass">
+                            @item.Status.ToString()
+                            </span>
+                        </td>
+                        <td>@item.TotalPrice.ToString("C2")</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a asp-action="Details"
+                                   asp-route-id="@item.AppointmentId"
+                                   class="btn btn-sm btn-info text-white">
+                                    Detay
+                                </a>
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.AppointmentId"
+                                   class="btn btn-sm btn-warning">
+                                    Düzenle
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+</div>

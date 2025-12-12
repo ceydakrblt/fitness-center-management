@@ -11,8 +11,8 @@
     <strong>@Model.Name</strong> adlı hizmeti silmek istediğinizden emin misiniz?
 </div>
 
-<form asp-area="Admin" asp-controller="Service" asp-action="Delete" method="post">
+<form asp-controller="Service" asp-action="Delete" method="post">
     <input type="hidden" asp-for="ServiceId" />
     <button type="submit" class="btn btn-danger btn-lg">Sil</button>
-    <a asp-area="Admin" asp-controller="Service" asp-action="Index" class="btn btn-secondary btn-lg">Geri</a>
+    <a  asp-controller="Service" asp-action="Index" class="btn btn-secondary btn-lg">Geri</a>
 </form>

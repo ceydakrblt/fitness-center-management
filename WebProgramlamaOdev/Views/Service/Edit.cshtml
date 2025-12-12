@@ -1,13 +1,15 @@
 ﻿@model WebProgramlamaOdev.Models.Service
 
 @{
-    ViewData["Title"] = "Hizmet Ekle";
+    ViewData["Title"] = "Hizmeti Düzenle";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="fw-bold mb-4">Yeni Hizmet Ekle</h2>
+<h2 class="fw-bold mb-4">Hizmeti Düzenle</h2>
 
-<form asp-area="Admin" asp-controller="Service" asp-action="Create" method="post" class="row g-3">
+<form asp-controller="Service" asp-action="Edit" method="post" class="row g-3">
+
+    <input type="hidden" asp-for="ServiceId" />
 
     <div class="col-md-6">
         <label asp-for="Name" class="form-label fw-bold"></label>
@@ -35,12 +37,11 @@
     <div class="col-12">
         <label asp-for="Description" class="form-label fw-bold"></label>
         <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
     </div>
 
     <div class="col-12 mt-3">
-        <button type="submit" class="btn btn-success btn-lg">Kaydet</button>
-        <a asp-area="Admin" asp-controller="Service" asp-action="Index" class="btn btn-secondary btn-lg">Geri</a>
+        <button type="submit" class="btn btn-warning btn-lg">Güncelle</button>
+        <a asp-controller="Service" asp-action="Index" class="btn btn-secondary btn-lg">Geri</a>
     </div>
 
 </form>

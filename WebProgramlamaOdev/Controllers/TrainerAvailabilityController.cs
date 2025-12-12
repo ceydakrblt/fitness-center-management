@@ -6,9 +6,8 @@ using WebProgramlamaOdev.Areas.Identity.Data;
 using WebProgramlamaOdev.Models;
 
 
-namespace WebProgramlamaOdev.Areas.Admin.Controllers
+namespace WebProgramlamaOdev.Controllers
 {
-    [Area("Admin")]
     [Authorize(Roles = "Admin")]
     public class TrainerAvailabilityController : Controller
     {

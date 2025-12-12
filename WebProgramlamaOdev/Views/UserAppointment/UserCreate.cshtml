@@ -1,0 +1,93 @@
+﻿@model WebProgramlamaOdev.Models.Appointment
+@using WebProgramlamaOdev.Models
+
+@{
+    var service = ViewBag.Service as Service;
+    ViewData["Title"] = service != null
+        ? "Randevu Oluştur (" + service.Name + ")"
+        : "Randevu Oluştur";
+}
+
+<h1 class="fw-bold">2. Adım: Eğitmen & Saat Seçimi</h1>
+
+@if (service != null)
+{
+        <p class="text-muted">
+            Seçilen Hizmet:
+            <span class="badge bg-primary">
+            @service.Name - @service.Price.ToString("C2")
+            </span>
+        </p>
+}
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+<div class="row">
+    <div class="col-md-8">
+
+        <form asp-controller="UserAppointment" asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+
+            <!-- 🔴 EN KRİTİK SATIR -->
+            <input type="hidden" asp-for="ServiceId" />
+
+            <!-- Eğitmen -->
+            <div class="mb-3">
+                <label asp-for="TrainerId" class="form-label">Eğitmen</label>
+                <select asp-for="TrainerId"
+                        class="form-select"
+                        asp-items="ViewBag.Trainers">
+                    <option value="">-- Eğitmen Seçiniz --</option>
+                </select>
+                <span asp-validation-for="TrainerId" class="text-danger"></span>
+            </div>
+
+            <!-- Tarih & Saat -->
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="AppointmentDate" class="form-label">Tarih</label>
+                    <input asp-for="AppointmentDate"
+                           type="date"
+                           class="form-control"
+                           min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="StartTime" class="form-label">Başlangıç</label>
+                    <input asp-for="StartTime" type="time" class="form-control" />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="EndTime" class="form-label">Bitiş</label>
+                    <input asp-for="EndTime" type="time" class="form-control" />
+                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Not -->
+            <div class="mb-3">
+                <label asp-for="Notes" class="form-label">Not</label>
+                <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+            </div>
+
+            <p class="alert alert-warning">
+                Randevu talebiniz yönetici onayına gönderilecektir.
+            </p>
+
+            <div class="d-flex justify-content-between">
+                <a asp-action="SelectService" class="btn btn-secondary">Geri</a>
+                <button type="submit" class="btn btn-success">
+                    Randevu Talebini Gönder
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

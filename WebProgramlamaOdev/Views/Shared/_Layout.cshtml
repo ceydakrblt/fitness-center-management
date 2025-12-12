@@ -53,19 +53,20 @@
                         {
                                 <li class="nav-item">
                                     <!-- ❗ HATA OLAN YER — -->
-                                    <a class="nav-link" asp-area="User" asp-controller="Appointment" asp-action="SelectService">
+                                        <a class="nav-link" asp-controller="UserAppointment" asp-action="Create">
+
                                         Randevu Al
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="User" asp-controller="Appointment" asp-action="Index">
+                                    <a class="nav-link" asp-controller="UserAppointment" asp-action="Index">
                                         Randevularım
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="User" asp-controller="AI" asp-action="Index">
+                                    <a class="nav-link" asp-controller="AI" asp-action="Index">
                                         AI Önerileri
                                     </a>
                                 </li>
@@ -79,12 +80,12 @@
                                         <i class="bi bi-gear-fill"></i> Admin Paneli
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Gym" asp-action="Index">🏢 Salonlar</a></li>
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Service" asp-action="Index">💪 Hizmetler</a></li>
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Trainer" asp-action="Index">👨‍🏫 Eğitmenler</a></li>
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="TrainerAvailability" asp-action="Index">📅 Müsaitlik Saatleri</a></li>
+                                        <li><a class="dropdown-item"  asp-controller="Gym" asp-action="Index">🏢 Salonlar</a></li>
+                                        <li><a class="dropdown-item"  asp-controller="Service" asp-action="Index">💪 Hizmetler</a></li>
+                                        <li><a class="dropdown-item"  asp-controller="Trainer" asp-action="Index">👨‍🏫 Eğitmenler</a></li>
+                                        <li><a class="dropdown-item"  asp-controller="TrainerAvailability" asp-action="Index">📅 Müsaitlik Saatleri</a></li>
                                         <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Appointment" asp-action="Index">📋 Tüm Randevular</a></li>
+                                        <li><a class="dropdown-item" asp-controller="AdminAppointment" asp-action="Index">📋 Tüm Randevular</a></li>
                                     </ul>
                                 </li>
                         }

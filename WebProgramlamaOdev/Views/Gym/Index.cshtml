@@ -2,13 +2,12 @@
 
 @{
     ViewData["Title"] = "Salonlar";
-    
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold">🏢 Salonlar</h1>
 
-    <a asp-area="Admin" asp-controller="Gym" asp-action="Create" class="btn btn-primary btn-lg">
+    <a asp-controller="Gym" asp-action="Create" class="btn btn-primary btn-lg">
         + Yeni Salon Ekle
     </a>
 </div>
@@ -16,7 +15,8 @@
 @if (Model == null || !Model.Any())
 {
         <div class="alert alert-info">
-            <strong>Henüz salon eklenmemiş!</strong> Yeni salon eklemek için yukarıdaki butona tıklayın.
+            <strong>Henüz salon eklenmemiş!</strong>
+            Yeni salon eklemek için yukarıdaki butona tıklayın.
         </div>
 }
 else
@@ -39,23 +39,35 @@ else
                                 <td class="fw-bold">@item.Name</td>
                                 <td>@item.Address</td>
                                 <td>@item.PhoneNumber</td>
-
                                 <td>
                                     <span class="badge bg-success">
-                                @item.OpeningTime.ToString(@"hh\:mm") - @item.ClosingTime.ToString(@"hh\:mm")
+                                @item.OpeningTime.ToString(@"hh\:mm")
+                                        -
+                                @item.ClosingTime.ToString(@"hh\:mm")
                                     </span>
                                 </td>
-
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a asp-area="Admin" asp-controller="Gym" asp-action="Details" asp-route-id="@item.GymId" 
-                                           class="btn btn-sm btn-info text-white">Detay</a>
+                                        <a asp-controller="Gym"
+                                           asp-action="Details"
+                                           asp-route-id="@item.GymId"
+                                           class="btn btn-sm btn-info text-white">
+                                            Detay
+                                        </a>
 
-                                        <a asp-area="Admin" asp-controller="Gym" asp-action="Edit" asp-route-id="@item.GymId" 
-                                           class="btn btn-sm btn-warning">Düzenle</a>
+                                        <a asp-controller="Gym"
+                                           asp-action="Edit"
+                                           asp-route-id="@item.GymId"
+                                           class="btn btn-sm btn-warning">
+                                            Düzenle
+                                        </a>
 
-                                        <a asp-area="Admin" asp-controller="Gym" asp-action="Delete" asp-route-id="@item.GymId" 
-                                           class="btn btn-sm btn-danger">Sil</a>
+                                        <a asp-controller="Gym"
+                                           asp-action="Delete"
+                                           asp-route-id="@item.GymId"
+                                           class="btn btn-sm btn-danger">
+                                            Sil
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
