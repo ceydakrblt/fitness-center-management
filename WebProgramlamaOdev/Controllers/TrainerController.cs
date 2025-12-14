@@ -94,6 +94,7 @@ namespace WebProgramlamaOdev.Controllers
                 {
                     _context.Update(trainer);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = $"{trainer.FullName} başarıyla güncellendi.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -110,7 +111,7 @@ namespace WebProgramlamaOdev.Controllers
             }
 
             // Hata durumunda salon listesini tekrar yükle
-            ViewBag.GymId = new SelectList(_context.Gyms, "GymId", "Name", trainer.GymId);
+            ViewData["GymId"] = new SelectList(_context.Gyms, "GymId", "Name", trainer.GymId);
             return View(trainer);
         }
 

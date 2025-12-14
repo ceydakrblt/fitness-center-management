@@ -46,35 +46,25 @@ namespace WebProgramlamaOdev.Controllers
         // GET: Admin/TrainerAvailability/Create
         public IActionResult Create()
         {
-            ViewBag.TrainerId = new SelectList(_context.Trainers, "TrainerId", "FirstName");
+            ViewBag.TrainerId = new SelectList(_context.Trainers, "TrainerId", "FullName");
             return View();
         }
 
         // POST: Admin/TrainerAvailability/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(
-            [Bind("AvailabilityId,TrainerId,DayOfWeek,StartTime,EndTime,IsActive")] TrainerAvailability availability)
+        public async Task<IActionResult> Create([Bind("AvailabilityId,TrainerId,DayOfWeek,StartTime,EndTime")] TrainerAvailability availability)
         {
             if (ModelState.IsValid)
             {
-                if (availability.StartTime >= availability.EndTime)
-                {
-                    ModelState.AddModelError("EndTime", "Bitiş Saati, Başlangıç Saatinden sonra olmalıdır.");
-                }
-                else if (IsConflict(availability))
-                {
-                    ModelState.AddModelError("", "Bu eğitmenin, aynı gün içinde bu saat aralığıyla çakışan bir müsaitlik kaydı zaten mevcut.");
-                }
-                else
-                {
-                    _context.Add(availability);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
+                _context.Add(availability);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Müsaitlik saati başarıyla eklendi.";
+                return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.TrainerId = new SelectList(_context.Trainers, "TrainerId", "FirstName", availability.TrainerId);
+            // Hata durumunda listeyi tekrar yükle
+            ViewBag.TrainerId = new SelectList(_context.Trainers, "TrainerId", "FullName", availability.TrainerId);
             return View(availability);
         }
 
@@ -86,7 +76,7 @@ namespace WebProgramlamaOdev.Controllers
             var availability = await _context.TrainerAvailabilities.FindAsync(id);
             if (availability == null) return NotFound();
 
-            ViewBag.TrainerId = new SelectList(_context.Trainers, "TrainerId", "FirstName", availability.TrainerId);
+            ViewBag.TrainerId = new SelectList(_context.Trainers, "TrainerId", "FullName", availability.TrainerId);
             return View(availability);
         }
 
