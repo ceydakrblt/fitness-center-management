@@ -18,7 +18,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Trainer> Trainers { get; set; }
     public DbSet<TrainerAvailability> TrainerAvailabilities { get; set; }
     public DbSet<Appointment> Appointments { get; set; }
-    public DbSet<AIRequest> AIRequests { get; set; }
+    public DbSet<AiExerciseRequest> AiExerciseRequests { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -70,12 +70,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
             .HasForeignKey(a => a.ServiceId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // AIRequest İlişkisi
-        builder.Entity<AIRequest>()
-            .HasOne(ai => ai.User)
-            .WithMany()
-            .HasForeignKey(ai => ai.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+    
 
         // Decimal precision ayarları
         builder.Entity<Service>()
@@ -86,8 +81,6 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
             .Property(a => a.TotalPrice)
             .HasPrecision(18, 2);
 
-        builder.Entity<AIRequest>()
-            .Property(ai => ai.Weight)
-            .HasPrecision(18, 2);
+       
     }
 }

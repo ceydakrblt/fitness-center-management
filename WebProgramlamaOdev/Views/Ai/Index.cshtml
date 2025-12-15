@@ -1,0 +1,60 @@
+﻿@model WebProgramlamaOdev.Models.AiExerciseRequest
+
+@{
+    ViewData["Title"] = "Yapay Zeka Egzersiz Önerisi";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">🤖 Yapay Zeka Egzersiz Planı</h4>
+                </div>
+
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        Boy, kilo ve hedef bilgilerinizi girerek size özel egzersiz planı oluşturabilirsiniz.
+                    </div>
+
+                    <form asp-action="Index" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Boy (cm)</label>
+                            <input asp-for="Height" class="form-control" placeholder="Örn: 175" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Kilo (kg)</label>
+                            <input asp-for="Weight" class="form-control" placeholder="Örn: 70" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Hedef</label>
+                            <select asp-for="Goal" class="form-select" required>
+                                <option value="">Seçiniz</option>
+                                <option>Kilo verme</option>
+                                <option>Kas geliştirme</option>
+                                <option>Form koruma</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-magic"></i> Yapay Zeka Öner
+                            </button>
+                        </div>
+                    </form>
+
+                    @if (ViewBag.Result != null)
+                    {
+                            <hr />
+                            <div class="alert alert-success">
+                                <h5 class="mb-2">📋 Önerilen Egzersiz Planı</h5>
+                                <pre style="white-space: pre-wrap;">@ViewBag.Result</pre>
+                            </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

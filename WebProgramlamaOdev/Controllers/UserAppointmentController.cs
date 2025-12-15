@@ -7,7 +7,7 @@ using WebProgramlamaOdev.Areas.Identity.Data;
 using WebProgramlamaOdev.Models;
 using System.Security.Claims;
 
-[Authorize] // Sadece üyeler erişebilir
+[Authorize]
 public class UserAppointmentController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -22,25 +22,41 @@ public class UserAppointmentController : Controller
     }
 
     // ---------------------------------
-    // USER - 1. ADIM: HİZMET SEÇİMİ (404 HATASINI GİDERİR)
-    // URL: /UserAppointment/SelectService
+    // 🆕 API: Eğitmenin Müsaitlik Saatlerini Getir
+    // URL: /UserAppointment/GetTrainerAvailability?trainerId=1
+    // ---------------------------------
+    [HttpGet]
+    public async Task<IActionResult> GetTrainerAvailability(int trainerId)
+    {
+        var availabilities = await _context.TrainerAvailabilities
+            .Where(ta => ta.TrainerId == trainerId && ta.IsActive)
+            .OrderBy(ta => ta.DayOfWeek)
+            .Select(ta => new
+            {
+                dayOfWeek = (int)ta.DayOfWeek,
+                startTime = ta.StartTime.ToString(@"hh\:mm"),
+                endTime = ta.EndTime.ToString(@"hh\:mm"),
+                isActive = ta.IsActive
+            })
+            .ToListAsync();
+
+        return Json(availabilities);
+    }
+
+    // ---------------------------------
+    // USER - 1. ADIM: HİZMET SEÇİMİ
     // ---------------------------------
     public async Task<IActionResult> SelectService()
     {
-        // View için aktif tüm hizmetleri getiriyoruz
         var services = await _context.Services.ToListAsync();
-
-        // View adı: Views/UserAppointment/SelectService.cshtml
         return View("SelectService", services);
     }
 
     // ---------------------------------
     // USER - RANDEVULARIM (LİSTE)
-    // URL: /UserAppointment/Index
     // ---------------------------------
     public async Task<IActionResult> Index()
     {
-        // Kullanıcının ID'sini al
         var userId = _userManager.GetUserId(User);
 
         var appointments = await _context.Appointments
@@ -50,18 +66,14 @@ public class UserAppointmentController : Controller
             .OrderByDescending(a => a.AppointmentDate)
             .ToListAsync();
 
-        // View adı: Views/UserAppointment/UserIndex.cshtml
         return View("UserIndex", appointments);
     }
 
     // ---------------------------------
     // USER - 2. ADIM: RANDEVU OLUŞTURMA FORMU (GET)
-    // URL: /UserAppointment/Create?serviceId=3
     // ---------------------------------
     public async Task<IActionResult> Create(int serviceId)
     {
-
-        // Seçilen hizmeti bul
         var service = await _context.Services
             .FirstOrDefaultAsync(s => s.ServiceId == serviceId);
 
@@ -69,51 +81,44 @@ public class UserAppointmentController : Controller
             return NotFound();
 
         ViewBag.Service = service;
-
-        // Eğitmenleri dropdown için yükle
         ViewBag.Trainers = new SelectList(
             _context.Trainers,
             "TrainerId",
             "FullName"
         );
 
-        // View adı: Views/UserAppointment/UserCreate.cshtml
         return View("UserCreate", new Appointment
         {
             ServiceId = serviceId,
-            // Başlangıç tarihi olarak yarını varsayabiliriz
             AppointmentDate = DateTime.Today.AddDays(1)
         });
     }
-    // UserAppointmentController.cs - POST Create metodu (NİHAİ DÜZELTME)
 
+    // ---------------------------------
+    // USER - RANDEVU OLUŞTURMA (POST)
+    // ---------------------------------
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Appointment appointment)
     {
-
-        // Modelin zorunlu alanlarını doldur (UserId, Status, CreatedAt)
         appointment.UserId = _userManager.GetUserId(User)!;
         appointment.Status = AppointmentStatus.Pending;
         appointment.CreatedAt = DateTime.Now;
 
-        // Eğitmen ve Hizmet verilerini çek
+        // ModelState temizleme
+        ModelState.Remove("UserId");
+        ModelState.Remove("CreatedAt");
+        ModelState.Remove("Status");
+        ModelState.Remove("User");
+        ModelState.Remove("Trainer");
+        ModelState.Remove("Service");
+        ModelState.Remove("TotalPrice");
+
         var trainer = await _context.Trainers.FindAsync(appointment.TrainerId);
         var service = await _context.Services.FindAsync(appointment.ServiceId);
 
-        if (trainer != null)
-        {
-            // 🚨 POTANSİYEL HATA GİDERİCİ: GymId ataması (DB'de zorunluysa)
-            // Eğer Appointment tablosunda zorunlu GymId varsa, buradan atıyoruz.
-            // Appointment modelinizde bu alanı oluşturmadıysanız, bunu atlayın. 
-            // Ancak bu, şema zorunluluğunu aşmanın tek yoludur.
-            // Eğer bu satır hata verirse (GymId Appointment modelinde yoksa), yoruma alın.
-            // appointment.GymId = trainer.GymId; 
-        }
-
         if (service != null)
         {
-            // TotalPrice ataması (ModelState.IsValid kontrolünden ÖNCE zorunlu)
             appointment.TotalPrice = service.Price;
         }
         else
@@ -121,24 +126,18 @@ public class UserAppointmentController : Controller
             ModelState.AddModelError("", "Seçilen hizmet bulunamadı.");
         }
 
-        // Şimdi, formdan gelmeyen, ancak kodla doldurulan alanlarla modelin geçerliliğini kontrol et.
         if (ModelState.IsValid)
         {
-            // EK KONTROL 1: Randevu tarihinin geçmişte olup olmadığını kontrol et
             if (appointment.AppointmentDate.Date < DateTime.Today.Date)
             {
                 ModelState.AddModelError("AppointmentDate", "Randevu tarihi geçmiş bir tarih olamaz.");
             }
-            // EK KONTROL 2: Başlangıç ve Bitiş saati kontrolü
             else if (appointment.StartTime >= appointment.EndTime)
             {
                 ModelState.AddModelError("EndTime", "Bitiş Saati, Başlangıç Saatinden sonra olmalıdır.");
             }
-            // Randevu/Müsaitlik Çakışma Kontrolü (İLERİDE EKLENECEK)
-
             else
             {
-                // Kayıt işlemi
                 _context.Appointments.Add(appointment);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Randevunuz oluşturuldu ve onay bekliyor.";
@@ -146,9 +145,7 @@ public class UserAppointmentController : Controller
             }
         }
 
-        // Hata varsa, View'a geri dönerken ViewBag'leri yeniden doldur
         ViewBag.Service = service;
-
         ViewBag.Trainers = new SelectList(
             _context.Trainers,
             "TrainerId",
@@ -156,9 +153,12 @@ public class UserAppointmentController : Controller
             appointment.TrainerId
         );
 
-        // View adı: Views/UserAppointment/UserCreate.cshtml
         return View("UserCreate", appointment);
     }
+
+    // ---------------------------------
+    // USER - RANDEVU DETAYLARI
+    // ---------------------------------
     public async Task<IActionResult> Details(int id)
     {
         var userId = _userManager.GetUserId(User);
@@ -176,6 +176,9 @@ public class UserAppointmentController : Controller
         return View("UserDetails", appointment);
     }
 
+    // ---------------------------------
+    // USER - RANDEVU SİLME
+    // ---------------------------------
     public async Task<IActionResult> Delete(int id)
     {
         var userId = _userManager.GetUserId(User);
@@ -207,6 +210,7 @@ public class UserAppointmentController : Controller
         {
             _context.Appointments.Remove(appointment);
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Randevunuz iptal edildi.";
         }
 
         return RedirectToAction(nameof(Index));
