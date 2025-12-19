@@ -31,26 +31,31 @@ namespace WebProgramlamaOdev.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(int height, int weight, string goal)
+        public async Task<IActionResult> Index(AiExerciseRequest model)
         {
-            var result = await _openAi.GetExercisePlan(height, weight, goal);
+            // SERVER-SIDE VALIDATION
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await _openAi.GetExercisePlan(
+                model.Height,
+                model.Weight,
+                model.Goal
+            );
 
             var user = await _userManager.GetUserAsync(User);
 
-            var record = new AiExerciseRequest
-            {
-                UserId = user.Id,
-                Height = height,
-                Weight = weight,
-                Goal = goal,
-                AiResponse = result,
-                CreatedAt = DateTime.Now
-            };
+            model.UserId = user.Id;
+            model.AiResponse = result;
+            model.CreatedAt = DateTime.Now;
 
-            _context.AiExerciseRequests.Add(record);
+            _context.AiExerciseRequests.Add(model);
             await _context.SaveChangesAsync();
 
             ViewBag.Result = result;
+
             return View();
         }
     }

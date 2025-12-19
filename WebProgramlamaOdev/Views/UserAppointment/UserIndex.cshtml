@@ -7,14 +7,12 @@
     
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="fw-bold">📆 Randevularım</h1>
-   <a asp-controller="UserAppointment" asp-action="Create">Randevu Al</a>
-
+<div class="d-flex justify-content-between align-items-center mb-4 appointment-header-box">
+    <h1 class="fw-bold m-0">📆 Randevularım</h1>
+    <a asp-controller="UserAppointment" asp-action="Create" class="btn sprint-btn">
         + Yeni Randevu Al
     </a>
 </div>
-
 @if (TempData["SuccessMessage"] != null)
 {
         <div class="alert alert-success">@TempData["SuccessMessage"]</div>

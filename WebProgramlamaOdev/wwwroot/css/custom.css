@@ -1,0 +1,658 @@
+﻿/* ============================================================
+   PROJECT CUSTOM STYLES (FULL & CLEAN - THE SPRINT THEME)
+============================================================ */
+
+/* GLOBAL SETTINGS */
+body {
+    background-color: #f4f7f6;
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #333;
+}
+
+/* NAVBAR STYLE (THESPRINNT LIKE) */
+.custom-navbar {
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    margin: 18px auto;
+    padding: 12px 20px;
+    max-width: 1150px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.custom-brand {
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: #ffc107 !important; /* Sprint Sarısı */
+}
+
+.custom-navbar .nav-link {
+    color: rgba(255,255,255,0.9) !important;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+    .custom-navbar .nav-link:hover {
+        color: #ffc107 !important;
+    }
+
+/* ============================================================
+   BUTTONS - THE SPRINT STYLE (ANA DÜZENLEME BURASI)
+============================================================ */
+
+/* 1. Üst Kısımdaki "Yeni Randevu Al" Butonu */
+.d-flex.justify-content-between a[asp-action="Create"],
+.btn-submit-yellow,
+.service-card .btn {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 25px !important;
+    border-radius: 10px !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3) !important;
+    text-decoration: none !important;
+}
+
+    .d-flex.justify-content-between a[asp-action="Create"]:hover,
+    .btn-submit-yellow:hover,
+    .service-card .btn:hover {
+        background-color: #e5ac00 !important;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4) !important;
+        color: #000 !important;
+    }
+
+/* 2. Tablo İçindeki "Detay" Butonu (Koyu Stil) */
+.btn-info, .btn-info.text-white {
+    background-color: #222 !important;
+    color: #fff !important;
+    border: 1px solid #444 !important;
+    font-weight: 600 !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+    transition: 0.3s !important;
+}
+
+    .btn-info:hover, .btn-info.text-white:hover {
+        background-color: #444 !important;
+        color: #ffc107 !important; /* Yazı sarıya döner */
+        border-color: #ffc107 !important;
+    }
+
+/* 3. Tablo İçindeki "İptal Et" Butonu */
+.btn-danger {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    transition: 0.3s !important;
+}
+
+    .btn-danger:hover {
+        background-color: #bb2d3b !important;
+        transform: scale(1.05);
+    }
+
+/* 4. "Geri" Butonu */
+.btn-secondary {
+    background-color: #6c757d !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+}
+
+/* ============================================================
+   RANDVULARIM SAYFASI ÜST GRİ ALAN
+============================================================ */
+.d-flex.justify-content-between.align-items-center.mb-4 {
+    background: #4a4a4a; /* Birinci fotoğraftaki gri */
+    padding: 35px 45px;
+    border-radius: 20px;
+    margin-top: 130px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.d-flex.justify-content-between h1.fw-bold {
+    color: #fff !important;
+    border-left: 5px solid #ffc107 !important;
+    padding-left: 15px;
+    margin: 0 !important;
+    text-transform: uppercase;
+}
+
+/* ============================================================
+   TABLES & CARDS
+============================================================ */
+.table-responsive {
+    background: #fff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+    margin-top: 30px;
+}
+
+.table-dark {
+    background-color: #222 !important;
+}
+
+    .table-dark th {
+        padding: 18px !important;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        border: none !important;
+    }
+
+.badge {
+    padding: 10px 16px !important;
+    border-radius: 6px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    font-size: 0.75rem !important;
+}
+
+/* HERO SECTION (HOME PAGE) */
+.hero-section {
+    background: url('/images/site.png') center 20% / cover no-repeat;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+}
+
+    .hero-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient( 70deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100% );
+        z-index: 1;
+    }
+
+.hero-content {
+    max-width: 500px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 45px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 2;
+    position: relative;
+}
+
+/* SERVICE CARDS */
+.service-card {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    transition: 0.3s;
+}
+
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 45px rgba(0,0,0,0.12);
+    }
+
+/* Randevu Al Butonu - Tema Sarısı ve Hover Efekti */
+.d-flex.justify-content-between a {
+    background-color: #f9c846 !important; /* Temadaki sarı renk */
+    color: #000 !important; /* Yazı rengi siyah */
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    padding: 10px 25px !important;
+    border-radius: 10px !important;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease-in-out !important; /* Geçiş animasyonu */
+    box-shadow: 0 4px 10px rgba(249, 200, 70, 0.2);
+}
+
+    /* HOVER (Üzerine Gelince) */
+    .d-flex.justify-content-between a:hover {
+        background-color: #000 !important; /* Arka plan siyaha döner */
+        color: #f9c846 !important; /* Yazı sarıya döner */
+        transform: translateY(-3px); /* Hafif yukarı zıplar */
+        box-shadow: 0 6px 15px rgba(249, 200, 70, 0.4);
+        border: 1px solid #f9c846; /* Kenarlık sarı olur */
+    }
+/* Butonun tıklanmasını garanti altına alan kod */
+.custom-appointment-btn {
+    background-color: #f9c846 !important;
+    color: #000 !important;
+    font-weight: 700 !important;
+    padding: 10px 25px !important;
+    border-radius: 10px !important;
+    display: inline-block !important; /* Flex yerine daha güvenli */
+    position: relative !important;
+    z-index: 9999 !important; /* Her şeyin üstünde olsun */
+    cursor: pointer !important;
+    text-decoration: none !important;
+}
+
+    .custom-appointment-btn:hover {
+        background-color: #000 !important;
+        color: #f9c846 !important;
+        transform: translateY(-3px);
+        border: 1px solid #f9c846 !important;
+    }
+/* Tıklama sorununu kökten çözen stil */
+.appointment-header-box {
+    position: relative;
+    z-index: 5;
+    background: #4a4a4a !important; /* Gri arka plan */
+    padding: 30px !important;
+    border-radius: 15px !important;
+    margin-top: 130px !important;
+}
+
+.sprint-btn {
+    background-color: #f9c846 !important; /* Tema sarısı */
+    color: #000 !important;
+    font-weight: 800 !important;
+    padding: 12px 25px !important;
+    border-radius: 10px !important;
+    text-decoration: none !important;
+    border: none !important;
+    display: inline-block !important;
+    position: relative !important;
+    z-index: 999 !important; /* Tıklanmayı garanti eder */
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+    /* Hover Efekti */
+    .sprint-btn:hover {
+        background-color: #000 !important;
+        color: #f9c846 !important;
+        transform: translateY(-3px) !important;
+        box-shadow: 0 5px 15px rgba(249, 200, 70, 0.4) !important;
+    }
+/* =============================
+    AI EXERCISE PAGE STYLES
+============================= */
+
+/* Sayfanın genel konumu (Navbar altında kalmaması için) */
+.container.mt-4 {
+    padding-top: 100px;
+    padding-bottom: 50px;
+}
+
+    /* Kartın Genel Tasarımı */
+    .container.mt-4 .card.shadow {
+        border: none;
+        border-radius: 20px;
+        background-color: #ffffff;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+    }
+
+    /* Kart Başlığı (Siyah Arka Plan + Sarı Vurgu) */
+    .container.mt-4 .card-header.bg-primary {
+        background-color: #222 !important; /* bg-primary ezildi */
+        border-bottom: 3px solid #f9c846; /* Sprint Sarısı */
+        padding: 20px;
+    }
+
+    .container.mt-4 .card-header h4 {
+        color: #f9c846 !important;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Bilgi Mesajı (Mavi Alert Kutusu) */
+    .container.mt-4 .alert-info {
+        background-color: #f8f9fa;
+        border: none;
+        border-left: 5px solid #f9c846;
+        color: #444;
+        font-weight: 500;
+    }
+
+    /* Form Inputları ve Select */
+    .container.mt-4 .form-control,
+    .container.mt-4 .form-select {
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 10px;
+        transition: all 0.3s;
+    }
+
+        .container.mt-4 .form-control:focus,
+        .container.mt-4 .form-select:focus {
+            border-color: #f9c846;
+            box-shadow: 0 0 0 0.25rem rgba(249, 200, 70, 0.25);
+        }
+
+    /* Buton Tasarımı (Sarı ve Hover Efekti) */
+    .container.mt-4 .btn-success {
+        background-color: #f9c846 !important; /* bg-success ezildi */
+        border: none !important;
+        color: #000 !important;
+        font-weight: 800;
+        text-transform: uppercase;
+        padding: 12px 30px;
+        border-radius: 12px;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 4px 15px rgba(249, 200, 70, 0.3);
+    }
+
+        .container.mt-4 .btn-success:hover {
+            background-color: #000 !important;
+            color: #f9c846 !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(249, 200, 70, 0.4);
+        }
+
+/* Yapay Zeka Sonuç Kutusu (AI Result) */
+.ai-result {
+    background-color: #222 !important;
+    color: #f8f9fa !important;
+    border-radius: 15px;
+    padding: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1.6;
+    border: 1px solid #444;
+    margin-top: 15px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    white-space: pre-wrap; /* Satır boşluklarını korur */
+}
+
+/* Sonuç Başlığı */
+.container.mt-4 h5 {
+    color: #222;
+    font-weight: 700;
+    margin-top: 20px;
+    border-bottom: 2px solid #f9c846;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+/* =============================
+   ADMIN SERVICES - GÜVENLİ TASARIM
+============================= */
+
+/* Üst Başlık Alanı (Gri Kutu) */
+.d-flex.justify-content-between.align-items-center.mb-4 {
+    background: #4a4a4a !important;
+    padding: 20px 30px !important;
+    border-radius: 15px !important;
+    margin-top: 100px !important; /* Mesafeyi biraz azalttık */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+    border-left: 5px solid #f9c846 !important;
+}
+
+/* Başlık Yazısı */
+.d-flex.justify-content-between h1.fw-bold {
+    color: #fff !important;
+    font-size: 1.5rem !important;
+    margin: 0 !important;
+}
+
+/* Yeni Hizmet Ekle Butonu */
+.btn-primary.btn-lg {
+    background-color: #f9c846 !important;
+    color: #000 !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    padding: 10px 20px !important;
+    border: none !important;
+    border-radius: 8px !important;
+}
+
+/* Tablo Konteynırı (Görünürlüğü Garanti Eder) */
+.table-responsive {
+    background: #fff !important;
+    padding: 15px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05) !important;
+    margin-top: 20px !important;
+    overflow-x: auto !important; /* Tablonun taşmasını engeller */
+}
+
+/* Tablo Başlığı */
+.table-dark {
+    background-color: #222 !important;
+}
+
+    .table-dark th {
+        font-size: 0.8rem !important;
+        text-transform: uppercase !important;
+        border: none !important;
+        padding: 12px !important;
+    }
+
+/* İşlem Butonları (Detay, Düzenle, Sil) */
+.btn-group .btn-sm {
+    border-radius: 4px !important;
+    margin: 0 2px !important;
+    padding: 5px 10px !important;
+    font-size: 0.75rem !important;
+}
+
+.btn-warning {
+    background-color: #f9c846 !important;
+    border: none !important;
+    color: #000 !important;
+}
+
+/* Tablo Satır Hover */
+.table-hover tbody tr:hover {
+    background-color: rgba(249, 200, 70, 0.05) !important;
+}
+
+/* =============================
+   GYM CREATE PAGE STYLES
+============================= */
+
+/* Sayfa Hizalaması */
+.container.mt-4 {
+    padding-top: 110px;
+    padding-bottom: 60px;
+}
+
+    /* Başlık Alanı (Görseldeki gibi Koyu Gri Kutu) */
+    .container.mt-4 h2.fw-bold {
+        background: #4a4a4a !important;
+        color: #fff !important;
+        padding: 25px 35px !important;
+        border-radius: 15px !important;
+        border-left: 6px solid #f9c846 !important;
+        font-size: 1.8rem !important;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0 !important;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+        /* Başlığın altındaki HR çizgisini kaldırıyoruz (Kutu yapısı olduğu için gerek yok) */
+        .container.mt-4 h2.fw-bold + hr {
+            display: none;
+        }
+
+    /* Formun bulunduğu sütun ve kart yapısı */
+    .container.mt-4 .row {
+        margin-top: 30px;
+    }
+
+    .container.mt-4 form {
+        background: #ffffff;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    }
+
+    /* Form Etiketleri (Label) */
+    .container.mt-4 .form-label {
+        font-weight: 700 !important;
+        color: #333;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+    }
+
+    /* Input ve Textarea (Giriş Alanları) */
+    .container.mt-4 .form-control {
+        border: 1px solid #ddd !important;
+        padding: 12px 15px !important;
+        border-radius: 10px !important;
+        transition: all 0.3s ease;
+    }
+
+        .container.mt-4 .form-control:focus {
+            border-color: #f9c846 !important;
+            box-shadow: 0 0 0 0.25rem rgba(249, 200, 70, 0.2) !important;
+        }
+
+    /* BUTONLAR (Sarı ve Siyah Tema) */
+
+    /* Kaydet Butonu (Success) */
+    .container.mt-4 .btn-success {
+        background-color: #f9c846 !important;
+        color: #000 !important;
+        font-weight: 800 !important;
+        text-transform: uppercase;
+        padding: 12px 30px !important;
+        border: none !important;
+        border-radius: 10px !important;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        box-shadow: 0 4px 15px rgba(249, 200, 70, 0.3) !important;
+    }
+
+        .container.mt-4 .btn-success:hover {
+            background-color: #000 !important;
+            color: #f9c846 !important;
+            transform: translateY(-3px);
+        }
+
+    /* Geri Butonu (Secondary) */
+    .container.mt-4 .btn-secondary {
+        background-color: #4a4a4a !important;
+        color: #fff !important;
+        border: none !important;
+        font-weight: 600 !important;
+        padding: 12px 25px !important;
+        border-radius: 10px !important;
+        transition: 0.3s;
+    }
+
+        .container.mt-4 .btn-secondary:hover {
+            background-color: #222 !important;
+            transform: translateX(-3px);
+        }
+
+/* Hata Mesajları */
+.alert-danger {
+    border-radius: 10px !important;
+    border: none !important;
+    font-weight: 500;
+}
+
+/* =============================
+   GYM EDIT PAGE STYLES
+============================= */
+
+/* Sayfa Konumu */
+.container.mt-4 {
+    padding-top: 110px;
+    padding-bottom: 60px;
+}
+
+    /* Kartın Genel Tasarımı */
+    .container.mt-4 .card.shadow {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.12) !important;
+    }
+
+    /* Kart Başlığı (Koyu Gri + Sarı Çizgi) */
+    .container.mt-4 .card-header.bg-warning {
+        background-color: #4a4a4a !important; /* Standart sarıyı gri ile ezdik */
+        border-bottom: 4px solid #f9c846; /* Sprint Sarısı vurgusu */
+        padding: 20px 30px;
+    }
+
+    .container.mt-4 .card-header h4 {
+        color: #f9c846 !important; /* Başlık metni sarı */
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Form İç Alanı */
+    .container.mt-4 .card-body {
+        padding: 40px;
+        background-color: #ffffff;
+    }
+
+    /* Form Etiketleri */
+    .container.mt-4 .form-label {
+        font-weight: 700;
+        color: #222;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        margin-bottom: 8px;
+    }
+
+    /* Giriş Alanları (Input & Textarea) */
+    .container.mt-4 .form-control {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 12px;
+        transition: all 0.3s ease;
+    }
+
+        .container.mt-4 .form-control:focus {
+            border-color: #f9c846;
+            box-shadow: 0 0 0 0.25rem rgba(249, 200, 70, 0.2);
+        }
+
+    /* BUTONLAR */
+
+    /* Güncelle Butonu (Warning) */
+    .container.mt-4 .btn-warning {
+        background-color: #f9c846 !important;
+        border: none !important;
+        color: #000 !important;
+        font-weight: 800;
+        text-transform: uppercase;
+        padding: 12px 35px;
+        border-radius: 12px;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 4px 15px rgba(249, 200, 70, 0.3);
+    }
+
+        .container.mt-4 .btn-warning:hover {
+            background-color: #000 !important;
+            color: #f9c846 !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(249, 200, 70, 0.4);
+        }
+
+    /* Geri Butonu (Secondary) */
+    .container.mt-4 .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+        .container.mt-4 .btn-secondary:hover {
+            background-color: #4a4a4a;
+            transform: translateX(-3px);
+        }
+
+/* Validasyon Mesajları */
+.text-danger {
+    font-size: 0.8rem;
+    font-weight: 500;
+}

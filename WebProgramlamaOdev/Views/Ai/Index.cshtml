@@ -1,7 +1,7 @@
 ﻿@model WebProgramlamaOdev.Models.AiExerciseRequest
 
 @{
-    ViewData["Title"] = "Yapay Zeka Egzersiz Önerisi";
+    ViewData["Title"] = "Yapay Zeka Egzersiz Onerisi";
 }
 
 <div class="container mt-4">
@@ -9,7 +9,7 @@
         <div class="col-md-8">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">🤖 Yapay Zeka Egzersiz Planı</h4>
+                    <h4 class="mb-0">Yapay Zeka Egzersiz PlanI</h4>
                 </div>
 
                 <div class="card-body">
@@ -17,30 +17,36 @@
                         Boy, kilo ve hedef bilgilerinizi girerek size özel egzersiz planı oluşturabilirsiniz.
                     </div>
 
-                    <form asp-action="Index" method="post">
+                    <!-- VALIDATION SUMMARY -->
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <form asp-action="Index" method="post" novalidate>
                         <div class="mb-3">
-                            <label class="form-label">Boy (cm)</label>
-                            <input asp-for="Height" class="form-control" placeholder="Örn: 175" required />
+                            <label asp-for="Height" class="form-label"></label>
+                            <input asp-for="Height" class="form-control" placeholder="Örn: 175" />
+                            <span asp-validation-for="Height" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Kilo (kg)</label>
-                            <input asp-for="Weight" class="form-control" placeholder="Örn: 70" required />
+                            <label asp-for="Weight" class="form-label"></label>
+                            <input asp-for="Weight" class="form-control" placeholder="Orn: 70" />
+                            <span asp-validation-for="Weight" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Hedef</label>
-                            <select asp-for="Goal" class="form-select" required>
-                                <option value="">Seçiniz</option>
+                            <label asp-for="Goal" class="form-label"></label>
+                            <select asp-for="Goal" class="form-select">
+                                <option value="">Seciniz</option>
                                 <option>Kilo verme</option>
                                 <option>Kas geliştirme</option>
                                 <option>Form koruma</option>
                             </select>
+                            <span asp-validation-for="Goal" class="text-danger"></span>
                         </div>
 
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-success">
-                                <i class="bi bi-magic"></i> Yapay Zeka Öner
+                                Yapay Zeka Oner
                             </button>
                         </div>
                     </form>
@@ -48,9 +54,9 @@
                     @if (ViewBag.Result != null)
                     {
                             <hr />
-                            <div class="alert alert-success">
-                                <h5 class="mb-2">📋 Önerilen Egzersiz Planı</h5>
-                                <pre style="white-space: pre-wrap;">@ViewBag.Result</pre>
+                            <h5 class="mb-2">Onerilen Egzersiz Plani</h5>
+                            <div class="ai-result">
+                            @ViewBag.Result
                             </div>
                     }
                 </div>
@@ -58,3 +64,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}

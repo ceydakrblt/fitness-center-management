@@ -8,160 +8,155 @@
         : "Randevu Oluştur";
 }
 
-<h1 class="fw-bold">2. Adım: Eğitmen & Saat Seçimi</h1>
+@* Sayfayı sarmalayan ana div *@
+<div class="container appointment-container">
 
-@if (service != null)
-{
-        <p class="text-muted">
-            Seçilen Hizmet:
-            <span class="badge bg-primary">
-            @service.Name - @service.Price.ToString("C2")
-            </span>
-        </p>
-}
+    <h1 class="fw-bold">2. Adım: Eğitmen & Saat Seçimi</h1>
 
-<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    @if (service != null)
+    {
+            <p class="text-muted">
+                Seçilen Hizmet:
+                <span class="badge custom-service-badge">
+                @service.Name - @service.Price.ToString("C2")
+                </span>
+            </p>
+    }
 
-<div class="row">
-    <!-- SOL TARAF: FORM -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-body">
-                <form asp-controller="UserAppointment" asp-action="Create" method="post">
-                    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-                    <input type="hidden" asp-for="ServiceId" />
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card custom-card">
+                <div class="card-body p-4">
+                    <form asp-controller="UserAppointment" asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
 
-                    <!-- Eğitmen -->
-                    <div class="mb-3">
-                        <label asp-for="TrainerId" class="form-label fw-bold">
-                            Eğitmen <span class="text-danger">*</span>
-                        </label>
-                        <select asp-for="TrainerId"
-                                class="form-select"
-                                asp-items="ViewBag.Trainers"
-                                id="trainerSelect"
-                                required>
-                            <option value="">-- Eğitmen Seçiniz --</option>
-                        </select>
-                        <span asp-validation-for="TrainerId" class="text-danger"></span>
-                    </div>
+                        <input type="hidden" asp-for="ServiceId" />
 
-                    <!-- Tarih & Saat -->
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label asp-for="AppointmentDate" class="form-label fw-bold">
-                                Tarih <span class="text-danger">*</span>
+                        <div class="mb-3">
+                            <label asp-for="TrainerId" class="form-label fw-bold">
+                                Eğitmen <span class="text-danger">*</span>
                             </label>
-                            <input asp-for="AppointmentDate"
-                                   type="date"
-                                   class="form-control"
-                                   id="dateSelect"
-                                   min="@DateTime.Today.ToString("yyyy-MM-dd")"
-                                   required />
-                            <span asp-validation-for="AppointmentDate" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="StartTime" class="form-label fw-bold">
-                                Başlangıç <span class="text-danger">*</span>
-                            </label>
-                            <input asp-for="StartTime" 
-                                   type="time" 
-                                   class="form-control"
-                                   required />
-                            <span asp-validation-for="StartTime" class="text-danger"></span>
+                            <select asp-for="TrainerId"
+                                    class="form-select custom-input"
+                                    asp-items="ViewBag.Trainers"
+                                    id="trainerSelect"
+                                    required>
+                                <option value="">-- Eğitmen Seçiniz --</option>
+                            </select>
+                            <span asp-validation-for="TrainerId" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="EndTime" class="form-label fw-bold">
-                                Bitiş <span class="text-danger">*</span>
-                            </label>
-                            <input asp-for="EndTime" 
-                                   type="time" 
-                                   class="form-control"
-                                   required />
-                            <span asp-validation-for="EndTime" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label asp-for="AppointmentDate" class="form-label fw-bold">
+                                    Tarih <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="AppointmentDate"
+                                       type="date"
+                                       class="form-control custom-input"
+                                       id="dateSelect"
+                                       min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                                       required />
+                                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Not -->
-                    <div class="mb-3">
-                        <label asp-for="Notes" class="form-label">Not (İsteğe Bağlı)</label>
-                        <textarea asp-for="Notes" 
-                                  class="form-control" 
-                                  rows="2"
-                                  placeholder="Özel notlarınız..."></textarea>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="StartTime" class="form-label fw-bold">
+                                    Başlangıç <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="StartTime" 
+                                       type="time" 
+                                       class="form-control custom-input"
+                                       required />
+                                <span asp-validation-for="StartTime" class="text-danger"></span>
+                            </div>
 
-                    <div class="alert alert-warning mb-3">
-                        <small>
-                            <i class="bi bi-info-circle"></i>
-                            Randevu talebiniz yönetici onayına gönderilecektir.
-                        </small>
-                    </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="EndTime" class="form-label fw-bold">
+                                    Bitiş <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="EndTime" 
+                                       type="time" 
+                                       class="form-control custom-input"
+                                       required />
+                                <span asp-validation-for="EndTime" class="text-danger"></span>
+                            </div>
+                        </div>
 
-                    <div class="d-flex justify-content-between">
-                        <a asp-action="SelectService" class="btn btn-secondary">
-                            ← Geri
-                        </a>
-                        <button type="submit" class="btn btn-success">
-                            📤 Randevu Talebini Gönder
-                        </button>
-                    </div>
-                </form>
+                        <div class="mb-3">
+                            <label asp-for="Notes" class="form-label fw-bold">Not (İsteğe Bağlı)</label>
+                            <textarea asp-for="Notes" 
+                                      class="form-control custom-input" 
+                                      rows="2"
+                                      placeholder="Özel notlarınız..."></textarea>
+                        </div>
+
+                        <div class="alert alert-warning-custom mb-4">
+                            <small>
+                                <i class="bi bi-info-circle"></i>
+                                Randevu talebiniz yönetici onayına gönderilecektir.
+                            </small>
+                        </div>
+
+                        <div class="d-flex justify-content-between gap-2">
+                            <a asp-action="SelectService" class="btn btn-outline-dark px-4">
+                                ← Geri
+                            </a>
+                            <button type="submit" class="btn btn-submit-yellow px-4">
+                                📤 Randevu Talebini Gönder
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- SAĞ TARAF: MÜSAİTLİK SAATLERİ -->
-    <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0">
-                    <i class="bi bi-calendar-check"></i>
-                    Eğitmen Müsaitlik Saatleri
-                </h5>
-            </div>
-            <div class="card-body">
-                <!-- Başlangıç Mesajı -->
-                <div id="availabilityInfo" class="text-center text-muted py-5">
-                    <i class="bi bi-info-circle" style="font-size: 3rem;"></i>
-                    <p class="mt-3 mb-0">Lütfen önce bir eğitmen seçin...</p>
+        <div class="col-md-6">
+            <div class="card custom-card shadow-sm">
+                <div class="card-header custom-card-header text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-calendar-check"></i>
+                        Eğitmen Müsaitlik Saatleri
+                    </h5>
                 </div>
-
-                <!-- Yükleme Animasyonu -->
-                <div id="loadingSpinner" style="display: none;" class="text-center py-5">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Yükleniyor...</span>
-                    </div>
-                    <p class="mt-3 text-muted">Müsaitlik saatleri yükleniyor...</p>
-                </div>
-
-                <!-- Müsaitlik Tablosu -->
-                <div id="availabilityTable" style="display: none;">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-sm">
-                            <thead class="table-light">
-                                <tr>
-                                    <th style="width: 35%">Gün</th>
-                                    <th style="width: 45%">Saat Aralığı</th>
-                                    <th style="width: 20%">Durum</th>
-                                </tr>
-                            </thead>
-                            <tbody id="availabilityTableBody">
-                                <!-- JavaScript ile doldurulacak -->
-                            </tbody>
-                        </table>
+                <div class="card-body">
+                    <div id="availabilityInfo" class="text-center text-muted py-5">
+                        <i class="bi bi-info-circle" style="font-size: 3rem; color: #ffc107;"></i>
+                        <p class="mt-3 mb-0">Lütfen önce bir eğitmen seçin...</p>
                     </div>
 
-                    <div class="alert alert-info alert-sm mt-3">
-                        <small>
-                            <i class="bi bi-lightbulb"></i>
-                            <strong>İpucu:</strong> Seçtiğiniz tarih, yeşil renkle vurgulanır.
-                        </small>
+                    <div id="loadingSpinner" style="display: none;" class="text-center py-5">
+                        <div class="spinner-border text-warning" role="status">
+                            <span class="visually-hidden">Yükleniyor...</span>
+                        </div>
+                        <p class="mt-3 text-muted">Müsaitlik saatleri yükleniyor...</p>
+                    </div>
+
+                    <div id="availabilityTable" style="display: none;">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Gün</th>
+                                        <th>Saat Aralığı</th>
+                                        <th>Durum</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="availabilityTableBody">
+                                    </tbody>
+                            </table>
+                        </div>
+
+                        <div class="alert alert-info-custom mt-3">
+                            <small>
+                                <i class="bi bi-lightbulb"></i>
+                                <strong>İpucu:</strong> Seçtiğiniz tarih, yeşil renkle vurgulanır.
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -173,139 +168,270 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
+    @* Buradaki mevcut JavaScript kodlarını aynen koruyabilirsin *@
         <script>
-            // Türkçe gün isimleri
-            const dayNames = {
-                0: 'Pazar',
-                1: 'Pazartesi',
-                2: 'Salı',
-                3: 'Çarşamba',
-                4: 'Perşembe',
-                5: 'Cuma',
-                6: 'Cumartesi'
-            };
+                        // Türkçe gün isimleri
 
-            // Eğitmen seçildiğinde
-            document.getElementById('trainerSelect').addEventListener('change', function() {
-                const trainerId = this.value;
-                const dateInput = document.getElementById('dateSelect');
-                const selectedDate = dateInput.value;
+                const dayNames = {
 
-                if (trainerId) {
-                    loadTrainerAvailability(trainerId, selectedDate);
-                } else {
-                    resetAvailabilityView();
-                }
-            });
+                    0: 'Pazar',
 
-            // Tarih değiştiğinde de güncelle
-            document.getElementById('dateSelect').addEventListener('change', function() {
-                const trainerId = document.getElementById('trainerSelect').value;
-                const selectedDate = this.value;
+                    1: 'Pazartesi',
 
-                if (trainerId) {
-                    loadTrainerAvailability(trainerId, selectedDate);
-                }
-            });
+                    2: 'Salı',
 
-            // Müsaitlik saatlerini yükle
-            function loadTrainerAvailability(trainerId, selectedDate) {
-                showLoading();
+                    3: 'Çarşamba',
 
-                fetch(`/UserAppointment/GetTrainerAvailability?trainerId=${trainerId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Müsaitlik verileri:', data);
-                        displayAvailability(data, selectedDate);
-                    })
-                    .catch(error => {
-                        console.error('Hata:', error);
-                        showError();
-                    });
-            }
+                    4: 'Perşembe',
 
-            // Müsaitlik saatlerini göster
-            function displayAvailability(availabilities, selectedDate) {
-                const tbody = document.getElementById('availabilityTableBody');
-                tbody.innerHTML = '';
+                    5: 'Cuma',
 
-                document.getElementById('loadingSpinner').style.display = 'none';
-                document.getElementById('availabilityInfo').style.display = 'none';
+                    6: 'Cumartesi'
 
-                if (!availabilities || availabilities.length === 0) {
-                    document.getElementById('availabilityTable').style.display = 'none';
-                    document.getElementById('availabilityInfo').innerHTML = `
-                        <div class="alert alert-warning">
-                            <i class="bi bi-exclamation-triangle"></i>
-                            Bu eğitmen için müsaitlik saati tanımlanmamış.
-                        </div>`;
-                    document.getElementById('availabilityInfo').style.display = 'block';
-                    return;
-                }
+                };
 
-                // Seçilen tarihin günü
-                let selectedDayOfWeek = null;
-                if (selectedDate) {
-                    const date = new Date(selectedDate + 'T00:00:00');
-                    selectedDayOfWeek = date.getDay();
-                }
 
-                // Tabloyu doldur
-                availabilities.forEach(avail => {
-                    const row = document.createElement('tr');
-                    const isSelectedDay = selectedDayOfWeek === avail.dayOfWeek;
 
-                    if (isSelectedDay) {
-                        row.classList.add('table-success');
+                // Eğitmen seçildiğinde
+
+                document.getElementById('trainerSelect').addEventListener('change', function() {
+
+                    const trainerId = this.value;
+
+                    const dateInput = document.getElementById('dateSelect');
+
+                    const selectedDate = dateInput.value;
+
+
+
+                    if (trainerId) {
+
+                        loadTrainerAvailability(trainerId, selectedDate);
+
+                    } else {
+
+                        resetAvailabilityView();
+
                     }
 
-                    row.innerHTML = `
-                        <td>
-                            <strong>${dayNames[avail.dayOfWeek]}</strong>
-                            ${isSelectedDay ? '<br><span class="badge bg-success badge-sm">Seçili Gün</span>' : ''}
-                        </td>
-                        <td>
-                            <span class="badge bg-primary">${avail.startTime} - ${avail.endTime}</span>
-                        </td>
-                        <td>
-                            <span class="badge ${avail.isActive ? 'bg-success' : 'bg-secondary'}">
-                                ${avail.isActive ? 'Aktif' : 'Pasif'}
-                            </span>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
                 });
 
-                document.getElementById('availabilityTable').style.display = 'block';
-            }
 
-            // Yükleme göster
-            function showLoading() {
-                document.getElementById('availabilityInfo').style.display = 'none';
-                document.getElementById('availabilityTable').style.display = 'none';
-                document.getElementById('loadingSpinner').style.display = 'block';
-            }
 
-            // Hata göster
-            function showError() {
-                document.getElementById('loadingSpinner').style.display = 'none';
-                document.getElementById('availabilityInfo').innerHTML = `
-                    <div class="alert alert-danger">
-                        <i class="bi bi-x-circle"></i>
-                        Müsaitlik saatleri yüklenirken hata oluştu.
-                    </div>`;
-                document.getElementById('availabilityInfo').style.display = 'block';
-            }
+                // Tarih değiştiğinde de güncelle
 
-            // Görünümü sıfırla
-            function resetAvailabilityView() {
-                document.getElementById('loadingSpinner').style.display = 'none';
-                document.getElementById('availabilityTable').style.display = 'none';
-                document.getElementById('availabilityInfo').innerHTML = `
-                    <i class="bi bi-info-circle" style="font-size: 3rem;"></i>
-                    <p class="mt-3 mb-0">Lütfen önce bir eğitmen seçin...</p>`;
-                document.getElementById('availabilityInfo').style.display = 'block';
-            }
+                document.getElementById('dateSelect').addEventListener('change', function() {
+
+                    const trainerId = document.getElementById('trainerSelect').value;
+
+                    const selectedDate = this.value;
+
+
+
+                    if (trainerId) {
+
+                        loadTrainerAvailability(trainerId, selectedDate);
+
+                    }
+
+                });
+
+
+
+                // Müsaitlik saatlerini yükle
+
+                function loadTrainerAvailability(trainerId, selectedDate) {
+
+                    showLoading();
+
+
+
+                    fetch(`/UserAppointment/GetTrainerAvailability?trainerId=${trainerId}`)
+
+                        .then(response => response.json())
+
+                        .then(data => {
+
+                            console.log('Müsaitlik verileri:', data);
+
+                            displayAvailability(data, selectedDate);
+
+                        })
+
+                        .catch(error => {
+
+                            console.error('Hata:', error);
+
+                            showError();
+
+                        });
+
+                }
+
+
+
+                // Müsaitlik saatlerini göster
+
+                function displayAvailability(availabilities, selectedDate) {
+
+                    const tbody = document.getElementById('availabilityTableBody');
+
+                    tbody.innerHTML = '';
+
+
+
+                    document.getElementById('loadingSpinner').style.display = 'none';
+
+                    document.getElementById('availabilityInfo').style.display = 'none';
+
+
+
+                    if (!availabilities || availabilities.length === 0) {
+
+                        document.getElementById('availabilityTable').style.display = 'none';
+
+                        document.getElementById('availabilityInfo').innerHTML = `
+
+                            <div class="alert alert-warning">
+
+                                <i class="bi bi-exclamation-triangle"></i>
+
+                                Bu eğitmen için müsaitlik saati tanımlanmamış.
+
+                            </div>`;
+
+                        document.getElementById('availabilityInfo').style.display = 'block';
+
+                        return;
+
+                    }
+
+
+
+                    // Seçilen tarihin günü
+
+                    let selectedDayOfWeek = null;
+
+                    if (selectedDate) {
+
+                        const date = new Date(selectedDate + 'T00:00:00');
+
+                        selectedDayOfWeek = date.getDay();
+
+                    }
+
+
+
+                    // Tabloyu doldur
+
+                    availabilities.forEach(avail => {
+
+                        const row = document.createElement('tr');
+
+                        const isSelectedDay = selectedDayOfWeek === avail.dayOfWeek;
+
+
+
+                        if (isSelectedDay) {
+
+                            row.classList.add('table-success');
+
+                        }
+
+
+
+                        row.innerHTML = `
+
+                            <td>
+
+                                <strong>${dayNames[avail.dayOfWeek]}</strong>
+
+                                ${isSelectedDay ? '<br><span class="badge bg-success badge-sm">Seçili Gün</span>' : ''}
+
+                            </td>
+
+                            <td>
+
+                                <span class="badge bg-primary">${avail.startTime} - ${avail.endTime}</span>
+
+                            </td>
+
+                            <td>
+
+                                <span class="badge ${avail.isActive ? 'bg-success' : 'bg-secondary'}">
+
+                                    ${avail.isActive ? 'Aktif' : 'Pasif'}
+
+                                </span>
+
+                            </td>
+
+                        `;
+
+                        tbody.appendChild(row);
+
+                    });
+
+
+
+                    document.getElementById('availabilityTable').style.display = 'block';
+
+                }
+
+
+
+                // Yükleme göster
+
+                function showLoading() {
+
+                    document.getElementById('availabilityInfo').style.display = 'none';
+
+                    document.getElementById('availabilityTable').style.display = 'none';
+
+                    document.getElementById('loadingSpinner').style.display = 'block';
+
+                }
+
+
+
+                // Hata göster
+
+                function showError() {
+
+                    document.getElementById('loadingSpinner').style.display = 'none';
+
+                    document.getElementById('availabilityInfo').innerHTML = `
+
+                        <div class="alert alert-danger">
+
+                            <i class="bi bi-x-circle"></i>
+
+                            Müsaitlik saatleri yüklenirken hata oluştu.
+
+                        </div>`;
+
+                    document.getElementById('availabilityInfo').style.display = 'block';
+
+                }
+
+
+
+                // Görünümü sıfırla
+
+                function resetAvailabilityView() {
+
+                    document.getElementById('loadingSpinner').style.display = 'none';
+
+                    document.getElementById('availabilityTable').style.display = 'none';
+
+                    document.getElementById('availabilityInfo').innerHTML = `
+
+                        <i class="bi bi-info-circle" style="font-size: 3rem;"></i>
+
+                        <p class="mt-3 mb-0">Lütfen önce bir eğitmen seçin...</p>`;
+
+                    document.getElementById('availabilityInfo').style.display = 'block';
+
+                }
         </script>
 }
