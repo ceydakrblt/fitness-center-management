@@ -4,55 +4,49 @@
     ViewData["Title"] = "Hizmet Seçimi";
 }
 
-<!-- HERO HEADER -->
 <section class="page-hero">
     <div class="page-hero-overlay">
-        <div class="container">
-            <h1 class="page-title">Randevu Al</h1>
-            <p class="page-subtitle">
-                1. Adım: Almak istediğiniz hizmeti seçin
-            </p>
+        <div class="container py-5">
+
+            <div class="text-center mb-5 mt-4">
+                <h1 class="page-title">Randevu Al</h1>
+                <p class="page-subtitle">1. Adım: Almak istediğiniz hizmeti seçin</p>
+            </div>
+
+            @if (Model == null || !Model.Any())
+            {
+                    <div class="alert alert-warning text-center mx-auto" style="max-width: 600px;">
+                        Aktif hizmet bulunmamaktadır. Lütfen Admin ile iletişime geçiniz.
+                    </div>
+            }
+            else
+            {
+                    <div class="row g-4">
+                    @foreach (var service in Model)
+                    {
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="card service-card h-100 shadow-sm">
+                                        <div class="card-body d-flex flex-column p-4">
+                                            <h5 class="fw-bold mb-3 text-dark">@service.Name</h5>
+
+                                            <p class="text-muted mb-4">
+                                                <i class="bi bi-clock me-2"></i>Süre: @service.DurationMinutes dk
+                                                <br />
+                                                <i class="bi bi-cash-coin me-2"></i>Ücret: @service.Price.ToString("C2")
+                                            </p>
+
+                                            <a asp-action="Create"
+                                               asp-route-serviceId="@service.ServiceId"
+                                               class="btn btn-primary mt-auto py-2 fw-bold">
+                                                BU HİZMETİ SEÇ
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                    }
+                    </div>
+            }
+
         </div>
     </div>
-</section>
-
-<!-- CONTENT -->
-<section class="container my-5">
-
-    @if (Model == null || !Model.Any())
-    {
-            <div class="alert alert-warning text-center">
-                Aktif hizmet bulunmamaktadır. Lütfen Admin ile iletişime geçiniz.
-            </div>
-    }
-    else
-    {
-            <div class="row g-4">
-            @foreach (var service in Model)
-            {
-                        <div class="col-md-6 col-lg-4">
-                            <div class="card service-card h-100 shadow-sm">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="fw-bold mb-2">@service.Name</h5>
-
-                                    <p class="text-muted mb-3">
-                                        <i class="bi bi-clock"></i>
-                                        Süre: @service.DurationMinutes dk
-                                        <br />
-                                        <i class="bi bi-cash-coin"></i>
-                                        Ücret: @service.Price.ToString("C2")
-                                    </p>
-
-                                    <a asp-action="Create"
-                                       asp-route-serviceId="@service.ServiceId"
-                                       class="btn btn-primary mt-auto">
-                                        Bu Hizmeti Seç
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-            }
-            </div>
-    }
-
 </section>
